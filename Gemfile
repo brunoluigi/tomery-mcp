@@ -23,8 +23,11 @@ gem "jbuilder"
 # Flexible authentication solution for Rails [https://github.com/heartcombo/devise]
 gem "devise"
 
-# OAuth 2 provider [https://github.com/doorkeeper-gem/doorkeeper]
-gem "doorkeeper"
+# OAuth authentication framework [https://github.com/omniauth/omniauth]
+gem "omniauth"
+gem "omniauth-google-oauth2"
+gem "omniauth-rails_csrf_protection"
+
 
 # Fast MCP server for Ruby [https://github.com/modelcontextprotocol/ruby-sdk]
 gem "fast-mcp"
