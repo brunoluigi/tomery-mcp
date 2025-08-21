@@ -12,6 +12,6 @@ class ListRecipesTool < ApplicationTool
 
     raise "Invalid token" unless user
 
-    "#{user.email_address}!"
+    JSON.generate(user.recipes.as_json(only: [ :id, :description, :ingredients, :instructions ]))
   end
 end
