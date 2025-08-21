@@ -1,0 +1,8 @@
+Current Session
+
+<br>
+
+<ul>
+  <li>User: <%= text_field_tag :email_address, Current.session.user.email_address, disabled: true %></li>
+  <li>Token: <%= text_field_tag :mcp_token, Current.session.mcp_token, disabled: true %></li>
+</ul>
