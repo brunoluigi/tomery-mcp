@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-class ListRecipesTool < ApplicationTool
-  description "List user recipies"
+class ListPantryItemsTool < ApplicationTool
+  description "List user pantry items available for cooking"
 
   arguments do
     required(:token).filled(:string).description("Token of the user's session")
@@ -10,6 +10,6 @@ class ListRecipesTool < ApplicationTool
   def call(token:)
     user = find_user_by_token(token)
 
-    JSON.generate(user.recipes.as_json(only: [ :id, :description, :ingredients, :instructions ]))
+    JSON.generate(user.pantry_items.as_json(only: [ :id, :name, :quantity ]))
   end
 end

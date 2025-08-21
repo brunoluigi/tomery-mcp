@@ -9,9 +9,7 @@ class RemoveRecipeTool < ApplicationTool
   end
 
   def call(token:, id:)
-    user = User.find_by_mcp_token(token)
-
-    raise "Invalid token" unless user
+    user = find_user_by_token(token)
 
     user.recipes.where(id:).destroy_all
 

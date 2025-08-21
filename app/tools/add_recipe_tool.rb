@@ -14,9 +14,7 @@ class AddRecipeTool < ApplicationTool
   end
 
   def call(token:, description:, ingredients:, instructions:)
-    user = User.find_by_mcp_token(token)
-
-    raise "Invalid token" unless user
+    user = find_user_by_token(token)
 
     user.recipes.create!(description:, ingredients:, instructions:)
 
