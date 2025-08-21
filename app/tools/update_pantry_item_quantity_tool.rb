@@ -12,9 +12,8 @@ class UpdatePantryItemQuantityTool < ApplicationTool
   def call(token:, name:, quantity:)
     user = find_user_by_token(token)
 
-    pantry_item = user.pantry_items.find_or_create_by!(name:) do |pantry_item|
-      pantry_item.quantity = quantity
-    end
+    pantry_item = user.pantry_items.find_or_create_by!(name:)
+    pantry_item.update!(quantity:)
 
     "Pantry item #{pantry_item.new_record? ? "created" : "updated"} successfully"
   end
