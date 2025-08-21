@@ -10,6 +10,6 @@ class ListRecipesTool < ApplicationTool
   def call(token:)
     user = find_user_by_token(token)
 
-    JSON.generate(user.recipes.as_json(only: [ :id, :description, :ingredients, :instructions ]))
+    JSON.generate(user.recipes.as_json(only: [ :id, :title, :description ]))
   end
 end

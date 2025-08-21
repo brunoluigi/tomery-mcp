@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-class RemoveRecipeTool < ApplicationTool
-  description "Remove recipe from user's cookbook"
+class ShowRecipeTool < ApplicationTool
+  description "Show recipe details"
 
   arguments do
     required(:token).filled(:string).description("Token of the user's session")
@@ -11,8 +11,6 @@ class RemoveRecipeTool < ApplicationTool
   def call(token:, id:)
     user = find_user_by_token(token)
 
-    user.recipes.where(id:).destroy_all
-
-    "OK"
+    JSON.generate(user.recipes.find_by(id:).as_json(only: [ :id, :title, :description, :ingredients, :instructions ]))
   end
 end

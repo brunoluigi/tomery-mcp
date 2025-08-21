@@ -15,6 +15,6 @@ class UpdatePantryItemQuantityTool < ApplicationTool
     pantry_item = user.pantry_items.find_or_create_by!(name:)
     pantry_item.update!(quantity:)
 
-    "Pantry item #{pantry_item.new_record? ? "created" : "updated"} successfully"
+    "OK"
   end
 end
