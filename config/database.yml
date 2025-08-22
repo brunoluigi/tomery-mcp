@@ -84,6 +84,7 @@ production:
     database: tomery_mcp_production
     username: tomery_mcp
     password: <%= ENV["TOMERY_MCP_DATABASE_PASSWORD"] %>
+    host: <%= ENV["DB_HOST"] %>
   cache:
     <<: *primary_production
     database: tomery_mcp_production_cache
