@@ -8,17 +8,19 @@ class UpdateRecipeTool < ApplicationTool
     required(:id).filled(:string).description("Recipe ID")
     required(:title).filled(:string).description("Recipe Title")
     required(:description).filled(:string).description("Recipe description")
-    required(:ingredients).array(:hash, min_size?: 1).description("Recipe ingredients") do
-      required(:name).filled(:string)
-      required(:quantity).filled(:string)
+    required(:ingredients).value(:array, min_size?: 1).description("Recipe ingredients").each do
+      hash do
+        required(:name).filled(:string)
+        required(:quantity).filled(:string)
+      end
     end
-    required(:instructions).array(:string, min_size?: 1).description("Recipe instructions")
+    required(:instructions).value(:array, min_size?: 1).description("Recipe instructions").each(:str?)
   end
 
   def call(token:, id:, title:, description:, ingredients:, instructions:)
     user = find_user_by_token(token)
 
-    user.recipes.find_by(id:).update!(title:, description:, ingredients:, instructions:)
+    UpdateRecipeService.call!(user:, id:, title:, description:, ingredients:, instructions:)
 
     "OK"
   end

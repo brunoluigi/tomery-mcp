@@ -11,7 +11,7 @@ class RemoveRecipeTool < ApplicationTool
   def call(token:, id:)
     user = find_user_by_token(token)
 
-    user.recipes.where(id:).destroy_all
+    RemoveRecipeService.call(user:, id:)
 
     "OK"
   end
