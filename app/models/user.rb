@@ -1,5 +1,6 @@
 class User < ApplicationRecord
   has_secure_password
+
   has_many :sessions, dependent: :destroy
   has_many :recipes, dependent: :destroy
   has_many :pantry_items, dependent: :destroy
