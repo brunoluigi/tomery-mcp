@@ -81,13 +81,13 @@ The MCP server is available at `/mcp` with tools for programmatic recipe and mea
 
 Run tests:
 ```bash
-rails test
+bin/rails spec test                                                                                                                                                                                                          
 ```
 
 Code quality checks:
 ```bash
-rubocop
-brakeman
+bin/rubocop
+bin/brakeman
 ```
 
 ## Deployment
