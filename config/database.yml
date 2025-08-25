@@ -82,8 +82,10 @@ production:
   primary: &primary_production
     <<: *default
     database: tomery_mcp_production
-    username: tomery_mcp
+    username: postgres
     password: <%= ENV["TOMERY_MCP_DATABASE_PASSWORD"] %>
+    host: <%= ENV["DB_HOST"] %>
+    port: 5433
   cache:
     <<: *primary_production
     database: tomery_mcp_production_cache
