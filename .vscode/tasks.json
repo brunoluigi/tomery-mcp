@@ -1,0 +1,96 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+
+    "version": "2.0.0",
+    "tasks": [
+        {
+        "label": "jsTestAll",
+        "type": "shell",
+        "presentation": { "reveal": "always" },
+        "problemMatcher": [],
+        "command": "yarn test-unit"
+        },
+        {
+        "label": "jsTestUniq",
+        "type": "shell",
+        "presentation": { "reveal": "always", "clear": true },
+        "problemMatcher": [],
+        "command": "yarn test-uniq ${file}"
+        },
+        {
+        "label": "playwrightTestUniq",
+        "type": "shell",
+        "presentation": { "reveal": "always", "clear": true },
+        "problemMatcher": [],
+        "command": "yarn test-e2e ${file}"
+        },
+        {
+        "label": "playwrightTestUniqDebug",
+        "type": "shell",
+        "presentation": { "reveal": "always", "clear": true },
+        "problemMatcher": [],
+        "command": "PWDEBUG=1 yarn test-e2e ${file} --headed"
+        },
+        {
+        "label": "rbTestAll",
+        "presentation": {
+            "reveal": "always",
+            "clear": true
+        },
+        "problemMatcher": [],
+        "command": "bundle",
+        "args": ["exec", "rspec"],
+        "options": {
+            "cwd": "${workspaceFolder}"
+        }
+        },
+        {
+        "label": "rbTestUniq",
+        "presentation": { "reveal": "always", "clear": true },
+        "problemMatcher": [],
+        "command": "bundle",
+        "args": ["exec", "rspec", "${file}"],
+        "options": {
+            "cwd": "${workspaceFolder}"
+        }
+        },
+        {
+        "label": "rbTestUniqLine",
+        "presentation": { "reveal": "always", "clear": true },
+        "problemMatcher": [],
+        "command": "bundle",
+        "args": ["exec", "rspec", "${file}:${lineNumber}"]
+        },
+        {
+        "label": "rbUpdateGraphQLSchema",
+        "presentation": { "reveal": "always", "clear": true },
+        "problemMatcher": [],
+        "command": "bundle",
+        "args": ["exec", "rails", "graphql:schema:dump"]
+        },
+        {
+        "label": "rbMiniTestUniq",
+        "presentation": {
+            "reveal": "always",
+            "clear": true
+        },
+        "problemMatcher": [],
+        "command": "bundle",
+        "args": ["exec", "rails", "test", "${file}"],
+        "options": {
+            "cwd": "${workspaceFolder}"
+        }
+        },
+        {
+        "label": "rbMiniTestUniqLine",
+        "presentation": {
+            "reveal": "always",
+            "clear": true
+        },
+        "problemMatcher": [],
+        "command": "bundle",
+        "args": ["exec", "rails", "test", "${file}:${lineNumber}"]
+        }
+    ]
+}

@@ -12,7 +12,7 @@ class ListMealPlansTool < ApplicationTool
   def call(token:, start_date:, end_date:)
     user = find_user_by_token(token)
 
-    meal_plans = user.meal_plans.where(date: start_date..end_date)
+    meal_plans = ListMealPlansService.call(user:, start_date:, end_date:)
 
     JSON.generate(meal_plans.as_json(only: [ :id, :date, :meal ], include: { recipe: { only: [ :id, :title, :description ] } }))
   end
