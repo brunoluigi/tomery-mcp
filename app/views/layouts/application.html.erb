@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title><%= content_for(:title) || "Tomery Mcp" %></title>
+    <title><%= content_for(:title) || "Tomery MCP" %></title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="mobile-web-app-capable" content="yes">
@@ -22,7 +22,9 @@
     <%= javascript_importmap_tags %>
   </head>
 
-  <body>
+<body class="grid">
+  <main class="card">
     <%= yield %>
-  </body>
+  </main>
+</body>
 </html>

@@ -1,8 +1,28 @@
-<h1>Forgot your password?</h1>
+<%# Flash %>
+<% if flash[:alert].present? %>
+  <div class="flash flash--alert"><%= flash[:alert] %></div>
+<% end %>
 
-<%= tag.div(flash[:alert], style: "color:red") if flash[:alert] %>
+<h1 class="mb-2 [text-shadow:0_0_12px_rgba(0,255,128,0.35),0_0_2px_rgba(0,255,128,0.75)]">Forgot your password?</h1>
+<p class="tagline">We'll email you a link to reset it</p>
 
-<%= form_with url: passwords_path do |form| %>
-  <%= form.email_field :email_address, required: true, autofocus: true, autocomplete: "username", placeholder: "Enter your email address", value: params[:email_address] %><br>
-  <%= form.submit "Email reset instructions" %>
+<%= form_with url: passwords_path, class: "form" do |form| %>
+  <div class="form-row">
+    <%= form.label :email_address, "Email address", class: "label" %>
+    <%= form.email_field :email_address,
+          required: true,
+          autofocus: true,
+          autocomplete: "username",
+          placeholder: "Enter your email address",
+          value: params[:email_address],
+          class: "input" %>
+  </div>
+
+  <div class="form-row">
+    <%= form.submit "Email reset instructions", class: "btn" %>
+  </div>
+
+  <div style="margin-top:10px">
+    <%= link_to "Sign in", session_path, class: "muted-link" %>
+  </div>
 <% end %>

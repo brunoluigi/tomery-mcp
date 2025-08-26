@@ -1,11 +1,42 @@
-<%= tag.div(flash[:alert], style: "color:red") if flash[:alert] %>
-<%= tag.div(flash[:notice], style: "color:green") if flash[:notice] %>
-
-<%= form_with url: session_path do |form| %>
-  <%= form.email_field :email_address, required: true, autofocus: true, autocomplete: "username", placeholder: "Enter your email address", value: params[:email_address] %><br>
-  <%= form.password_field :password, required: true, autocomplete: "current-password", placeholder: "Enter your password", maxlength: 72 %><br>
-  <%= form.submit "Sign in" %>
+<%# Flash messages %>
+<% if flash[:alert].present? %>
+  <div class="flash flash--alert"><%= flash[:alert] %></div>
 <% end %>
-<br>
+<% if flash[:notice].present? %>
+  <div class="flash flash--notice"><%= flash[:notice] %></div>
+<% end %>
 
-<%= link_to "Forgot password?", new_password_path %>
+<h1 class="mb-2 [text-shadow:0_0_12px_rgba(0,255,128,0.35),0_0_2px_rgba(0,255,128,0.75)]">Sign in</h1>
+<p class="tagline">Access your AI Kitchen</p>
+
+<%= form_with url: session_path, class: "form" do |form| %>
+  <div class="form-row">
+    <%= form.label :email_address, "Email address", class: "label" %>
+    <%= form.email_field :email_address,
+          required: true,
+          autofocus: true,
+          autocomplete: "username",
+          placeholder: "Enter your email address",
+          value: params[:email_address],
+          class: "input" %>
+  </div>
+
+  <div class="form-row">
+    <%= form.label :password, "Password", class: "label" %>
+    <%= form.password_field :password,
+          required: true,
+          autocomplete: "current-password",
+          placeholder: "Enter your password",
+          maxlength: 72,
+          class: "input" %>
+  </div>
+
+  <div class="form-row">
+    <%= form.submit "Sign in", class: "btn" %>
+  </div>
+<% end %>
+
+<div style="margin-top:10px">
+  <%= link_to "Forgot password?", new_password_path, class: "muted-link" %>
+  <%= link_to "Sign up", new_user_path, class: "muted-link" %>
+</div>

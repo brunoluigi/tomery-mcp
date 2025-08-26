@@ -1,8 +1,18 @@
-Current Session
+<h1 class="mb-2 [text-shadow:0_0_12px_rgba(0,255,128,0.35),0_0_2px_rgba(0,255,128,0.75)]">Current session</h1>
+<p class="tagline">Read‑only details</p>
 
-<br>
+<div class="form" style="margin-top: 8px">
+  <div class="form-row">
+    <label class="label" for="email_address">User</label>
+    <%= text_field_tag :email_address, Current.session.user.email_address, disabled: true, class: "input" %>
+  </div>
 
-<ul>
-  <li>User: <%= text_field_tag :email_address, Current.session.user.email_address, disabled: true %></li>
-  <li>Token: <%= text_field_tag :mcp_token, Current.session.mcp_token, disabled: true %></li>
-</ul>
+  <div class="form-row">
+    <label class="label" for="mcp_token">Token</label>
+    <%= text_field_tag :mcp_token, Current.session.mcp_token, disabled: true, class: "input" %>
+  </div>
+</div>
+
+<div style="margin-top:10px">
+  <%= link_to "Sign out", session_path, data: { turbo_method: :delete }, class: "muted-link" %>
+</div>
