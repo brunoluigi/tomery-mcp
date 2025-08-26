@@ -1,9 +1,28 @@
-<h1>Update your password</h1>
+<h1 class="mb-2 [text-shadow:0_0_12px_rgba(0,255,128,0.35),0_0_2px_rgba(0,255,128,0.75)]">Update your password</h1>
+<p class="tagline">Choose a strong password you don't use elsewhere</p>
 
-<%= tag.div(flash[:alert], style: "color:red") if flash[:alert] %>
+<%= form_with url: password_path(params[:token]), method: :put, class: "form" do |form| %>
+  <div class="form-row">
+    <%= form.label :password, "New password", class: "label" %>
+    <%= form.password_field :password,
+          required: true,
+          autocomplete: "new-password",
+          placeholder: "Enter new password",
+          maxlength: 72,
+          class: "input" %>
+  </div>
 
-<%= form_with url: password_path(params[:token]), method: :put do |form| %>
-  <%= form.password_field :password, required: true, autocomplete: "new-password", placeholder: "Enter new password", maxlength: 72 %><br>
-  <%= form.password_field :password_confirmation, required: true, autocomplete: "new-password", placeholder: "Repeat new password", maxlength: 72 %><br>
-  <%= form.submit "Save" %>
+  <div class="form-row">
+    <%= form.label :password_confirmation, "Confirm password", class: "label" %>
+    <%= form.password_field :password_confirmation,
+          required: true,
+          autocomplete: "new-password",
+          placeholder: "Repeat new password",
+          maxlength: 72,
+          class: "input" %>
+  </div>
+
+  <div class="form-row">
+    <%= form.submit "Save", class: "btn" %>
+  </div>
 <% end %>

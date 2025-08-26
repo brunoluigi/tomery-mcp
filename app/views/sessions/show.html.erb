@@ -1,8 +1,14 @@
-Current Session
+<h1 class="mb-2 glow">Current session</h1>
+<p class="tagline">Read‑only details</p>
 
-<br>
+<div class="form" style="margin-top: 8px">
+  <div class="form-row">
+    <label class="label" for="email_address">User</label>
+    <%= text_field_tag :email_address, Current.session.user.email_address, disabled: true, class: "input" %>
+  </div>
 
-<ul>
-  <li>User: <%= text_field_tag :email_address, Current.session.user.email_address, disabled: true %></li>
-  <li>Token: <%= text_field_tag :mcp_token, Current.session.mcp_token, disabled: true %></li>
-</ul>
+  <div class="form-row">
+    <label class="label" for="mcp_token">Token</label>
+    <%= text_field_tag :mcp_token, Current.session.mcp_token, disabled: true, class: "input" %>
+  </div>
+</div>

@@ -1,0 +1,12 @@
+<div>
+  <h1 class="glow">Tomery ⌁</h1>
+  <h2 class="glow mb-8">MCP for AI Meal Planner</h2>
+  <p class="tagline">AI‑assisted meal planning, pantry tracking, and recipe management.</p>
+  <div class="divider"></div>
+  <p class="info">Boot sequence complete. Interface online. Server up and running.</p>
+  <% if !authenticated? %>
+    <div class="row">
+      <%= link_to "Sign in", new_session_path, class: "button" %>
+    </div>
+  <% end %>
+</div>

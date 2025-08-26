@@ -71,3 +71,9 @@ group :test do
 end
 
 gem "fast-mcp", "~> 1.5"
+
+gem "resend", "~> 0.24.0"
+
+gem "tailwindcss-ruby", "~> 4.1"
+
+gem "tailwindcss-rails", "~> 4.3"

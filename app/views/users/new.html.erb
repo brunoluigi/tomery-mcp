@@ -1,0 +1,11 @@
+<% content_for :title, "Waiting list" %>
+
+<div class="w-full">
+  <h1 class="glow">Enter the waiting list</h1>
+
+  <%= render "form", user: @user %>
+
+  <div class="mt-5">
+    <%= link_to "Back", users_path, class: "muted-link" %>
+  </div>
+</div>

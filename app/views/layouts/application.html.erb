@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title><%= content_for(:title) || "Tomery Mcp" %></title>
+    <title><%= content_for(:title) || "Tomery MCP" %></title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="mobile-web-app-capable" content="yes">
@@ -22,7 +22,28 @@
     <%= javascript_importmap_tags %>
   </head>
 
-  <body>
+<body class="grid">
+  <main class="card">
+    <% if authenticated? %>
+      <div class="mb-5">
+        <% if Current.session.user.admin? %>
+        <%= link_to "current session", session_path, class: "muted-link" %> | 
+          <%= link_to "users", users_path, class: "muted-link" %> | 
+        <% end %>
+        <%= link_to "sign out", session_path, data: { turbo_method: :delete }, class: "muted-link" %>
+      </div>
+    <% end %>
+    <%= content_for :nav %>
+
+    <%# Flash messages %>
+    <% if flash[:alert].present? %>
+      <div class="flash flash--alert"><%= flash[:alert] %></div>
+    <% end %>
+    <% if flash[:notice].present? %>
+      <div class="flash flash--notice"><%= flash[:notice] %></div>
+    <% end %>
+
     <%= yield %>
-  </body>
+  </main>
+</body>
 </html>

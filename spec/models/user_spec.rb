@@ -9,11 +9,14 @@ RSpec.describe User, type: :model do
   end
 
 
-  context 'Validation' do
-    it { validate_presence_of(:email_address) }
-    it { validate_presence_of(:password) }
-    it { validate_length_of(:password).is_at_least(8) }
-    it { validate_uniqueness_of(:email_address) }
+  describe 'Validation' do
+    it { should validate_presence_of(:email_address) }
+    it { should validate_length_of(:password).is_at_least(8) }
+
+    context "uniqueness" do
+      subject { FactoryBot.build(:user, email_address: "another@email.com") }
+      it { should validate_uniqueness_of(:email_address).ignoring_case_sensitivity }
+    end
   end
 
   context 'Normalization' do

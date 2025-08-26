@@ -3,7 +3,7 @@ module Authentication
 
   included do
     before_action :require_authentication
-    helper_method :authenticated?
+    helper_method :authenticated?, :current_user
   end
 
   class_methods do
@@ -17,8 +17,20 @@ module Authentication
       resume_session
     end
 
+    def current_user
+      Current.session.user
+    end
+
     def require_authentication
       resume_session || request_authentication
+    end
+
+    def require_admin_access
+      require_authentication
+
+      user = Current.session.user
+
+      redirect_to session_url, alert: "Only admin access here pal..." unless user.admin?
     end
 
     def resume_session
@@ -26,7 +38,7 @@ module Authentication
     end
 
     def find_session_by_cookie
-      Session.find_by(id: cookies.signed[:session_id]) if cookies.signed[:session_id]
+      Session.joins(:user).merge(User.active).find_by(id: cookies.signed[:session_id]) if cookies.signed[:session_id]
     end
 
     def request_authentication
@@ -35,7 +47,7 @@ module Authentication
     end
 
     def after_authentication_url
-      session.delete(:return_to_after_authenticating) || root_url
+      session.delete(:return_to_after_authenticating) || session_url
     end
 
     def start_new_session_for(user)

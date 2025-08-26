@@ -77,3 +77,9 @@ Shoulda::Matchers.configure do |config|
     with.library :rails
   end
 end
+
+module SignInHelper
+  def sign_in_as(user)
+    post session_url(email_address: user.email_address, password: user.password)
+  end
+end
