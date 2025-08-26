@@ -1,4 +1,4 @@
-<h1 class="mb-2 [text-shadow:0_0_12px_rgba(0,255,128,0.35),0_0_2px_rgba(0,255,128,0.75)]">Current session</h1>
+<h1 class="mb-2 glow">Current session</h1>
 <p class="tagline">Read‑only details</p>
 
 <div class="form" style="margin-top: 8px">
@@ -11,8 +11,4 @@
     <label class="label" for="mcp_token">Token</label>
     <%= text_field_tag :mcp_token, Current.session.mcp_token, disabled: true, class: "input" %>
   </div>
-</div>
-
-<div style="margin-top:10px">
-  <%= link_to "Sign out", session_path, data: { turbo_method: :delete }, class: "muted-link" %>
 </div>

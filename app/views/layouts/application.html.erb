@@ -24,6 +24,25 @@
 
 <body class="grid">
   <main class="card">
+    <% if authenticated? %>
+      <div class="mb-5">
+        <% if Current.session.user.admin? %>
+        <%= link_to "current session", session_path, class: "muted-link" %> | 
+          <%= link_to "users", users_path, class: "muted-link" %> | 
+        <% end %>
+        <%= link_to "sign out", session_path, data: { turbo_method: :delete }, class: "muted-link" %>
+      </div>
+    <% end %>
+    <%= content_for :nav %>
+
+    <%# Flash messages %>
+    <% if flash[:alert].present? %>
+      <div class="flash flash--alert"><%= flash[:alert] %></div>
+    <% end %>
+    <% if flash[:notice].present? %>
+      <div class="flash flash--notice"><%= flash[:notice] %></div>
+    <% end %>
+
     <%= yield %>
   </main>
 </body>

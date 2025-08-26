@@ -107,6 +107,9 @@
  .muted-link { color: #9ef9ae; opacity: .75; text-decoration: none; }
  .muted-link:hover { opacity: .95; text-decoration: underline; text-underline-offset: 2px; }
 
+ .alert { color: #ffb3b3; opacity: .75; text-decoration: none; }
+ .alert:hover { opacity: .95; text-decoration: underline; text-underline-offset: 2px; }
+
  .flash { margin-bottom: 10px; padding: 10px 12px; border-radius: 10px; font-size: 14px; }
  .flash--alert { color: #ffb3b3; background: rgba(255, 64, 64, 0.08); border: 1px solid rgba(255, 64, 64, 0.3); }
  .flash--notice { color: #c8facc; background: rgba(0, 255, 128, 0.08); border: 1px solid rgba(0, 255, 128, 0.3); }
