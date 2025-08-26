@@ -71,3 +71,5 @@ group :test do
 end
 
 gem "fast-mcp", "~> 1.5"
+
+gem "resend", "~> 0.24.0"
