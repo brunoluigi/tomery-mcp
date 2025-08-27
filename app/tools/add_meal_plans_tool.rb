@@ -5,7 +5,7 @@ class AddMealPlansTool < ApplicationTool
 
   arguments do
     required(:token).filled(:string).description("Token of the user's session")
-    required(:meal_plans).value(:array, min_size?: 1).description("Meal plans array of objects: {recipe_id: string, date: date, meal: [breakfast|lunch|dinner|snack]}").each do
+    required(:meal_plans).value(:array, min_size?: 1).description("Meal plans array of objects: [{recipe_id: string, date: date, meal: [breakfast|lunch|dinner|snack]}]").each do
       hash do
         required(:recipe_id).filled(:string).description("Recipe ID")
         required(:date).filled(:date).description("Date of the meal")
