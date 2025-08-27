@@ -5,7 +5,7 @@ class AddPantryItemsTool < ApplicationTool
 
   arguments do
     required(:token).filled(:string).description("Token of the user's session")
-    required(:pantry_items).array(min_size?: 1).description("Pantry items").each do
+    required(:pantry_items).array(min_size?: 1).description("Pantry items: [{ name: string, quantity: string }]").each do
       hash do
         required(:name).filled(:string).description("Pantry item description")
         required(:quantity).filled(:string).description("Pantry item quantity")

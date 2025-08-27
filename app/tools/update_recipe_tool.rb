@@ -8,7 +8,7 @@ class UpdateRecipeTool < ApplicationTool
     required(:id).filled(:string).description("Recipe ID")
     required(:title).filled(:string).description("Recipe Title")
     required(:description).filled(:string).description("Recipe description")
-    required(:ingredients).value(:array, min_size?: 1).description("Recipe ingredients").each do
+    required(:ingredients).value(:array, min_size?: 1).description("Recipe ingredients: [{ name: string, quantity: string }]").each do
       hash do
         required(:name).filled(:string)
         required(:quantity).filled(:string)
