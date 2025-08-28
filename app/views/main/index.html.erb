@@ -6,7 +6,8 @@
   <p class="info">Boot sequence complete. Interface online. Server up and running.</p>
   <% if !authenticated? %>
     <div class="row">
-      <%= link_to "Sign in", new_session_path, class: "button" %>
+      <%= link_to "Enter the waiting list", new_user_path, class: "btn" %> ~
+      <%= link_to "Sign in", new_session_path, class: "btn" %>
     </div>
   <% end %>
 
