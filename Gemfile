@@ -77,3 +77,5 @@ gem "resend", "~> 0.24.0"
 gem "tailwindcss-ruby", "~> 4.1"
 
 gem "tailwindcss-rails", "~> 4.3"
+
+gem "newrelic_rpm", "~> 9.21"
