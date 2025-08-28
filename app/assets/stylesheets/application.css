@@ -11,13 +11,13 @@
 
  :root { color-scheme: dark light; }
  * { box-sizing: border-box; }
- html, body { height: 100%; margin: 0; }
+ html { height: 100%; margin: 0; }
  body {
    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
    color: var(--color-ok);
    background: #0a0f0a;
    display: grid; place-items: center;
-   overflow: hidden;
+   overflow: auto;
  }
 
  /* Animated grid (nerdy vibe) */
