@@ -53,8 +53,7 @@ env:
     # Use tomery_mcp-db for a db accessory server on same machine via local kamal docker network.
     DB_HOST: tomery_mcp-db
 
-    # Log everything from Rails
-    RAILS_LOG_LEVEL: debug
+    RAILS_LOG_LEVEL: info
 
 # Aliases are triggered with "bin/kamal <alias>". You can overwrite arguments on invocation:
 # "bin/kamal logs -r job" will tail logs from the first server in the job section.
