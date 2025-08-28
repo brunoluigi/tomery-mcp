@@ -11,4 +11,6 @@
     <label class="label" for="mcp_token">Token</label>
     <%= text_field_tag :mcp_token, Current.session.mcp_token, disabled: true, class: "input" %>
   </div>
+
+  <%= render partial: "shared/instructions" %>
 </div>

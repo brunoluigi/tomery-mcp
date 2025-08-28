@@ -1,4 +1,4 @@
-<div>
+<div class="overflow-y-auto">
   <h1 class="glow">Tomery ⌁</h1>
   <h2 class="glow mb-8">MCP for AI Meal Planner</h2>
   <p class="tagline">AI‑assisted meal planning, pantry tracking, and recipe management.</p>
@@ -9,4 +9,6 @@
       <%= link_to "Sign in", new_session_path, class: "button" %>
     </div>
   <% end %>
+
+  <%= render partial: "shared/instructions" %>
 </div>
