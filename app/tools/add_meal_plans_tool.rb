@@ -17,7 +17,7 @@ class AddMealPlansTool < ApplicationTool
   def call(token:, meal_plans:)
     user = find_user_by_token(token)
 
-    AddMealPlansService.call!(user:, meal_plans:)
+    Tools::AddMealPlansService.call!(user:, meal_plans:)
 
     "OK"
   end

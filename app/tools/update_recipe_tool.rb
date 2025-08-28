@@ -20,7 +20,7 @@ class UpdateRecipeTool < ApplicationTool
   def call(token:, id:, title:, description:, ingredients:, instructions:)
     user = find_user_by_token(token)
 
-    UpdateRecipeService.call!(user:, id:, title:, description:, ingredients:, instructions:)
+    Tools::UpdateRecipeService.call!(user:, id:, title:, description:, ingredients:, instructions:)
 
     "OK"
   end

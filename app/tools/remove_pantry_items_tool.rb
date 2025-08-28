@@ -11,7 +11,7 @@ class RemovePantryItemsTool < ApplicationTool
   def call(token:, ids:)
     user = find_user_by_token(token)
 
-    RemovePantryItemsService.call(user:, ids:)
+    Tools::RemovePantryItemsService.call(user:, ids:)
 
     "OK"
   end

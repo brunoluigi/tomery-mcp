@@ -35,10 +35,10 @@ class UsersController < ApplicationController
   end
 
   def toggle_activate
-    @user.toggle(:active).save!
+    updated_user = UserToggleActiveService.call!(user: @user)
 
     respond_to do |format|
-      format.html { redirect_to users_path, notice: "User was successfully #{ @user.active? ? "activated" : "deactivated" }.", status: :see_other }
+      format.html { redirect_to users_path, notice: "User was successfully #{ updated_user.active? ? "activated" : "deactivated" }.", status: :see_other }
       format.json { head :no_content }
     end
   end

@@ -12,7 +12,7 @@ class UpdatePantryItemQuantityTool < ApplicationTool
   def call(token:, name:, quantity:)
     user = find_user_by_token(token)
 
-    UpdatePantryItemQuantityService.call!(user:, name:, quantity:)
+    Tools::UpdatePantryItemQuantityService.call!(user:, name:, quantity:)
 
     "OK"
   end

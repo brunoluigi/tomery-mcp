@@ -14,7 +14,7 @@
  html, body { height: 100%; margin: 0; }
  body {
    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-   color: #c8facc;
+   color: var(--color-ok);
    background: #0a0f0a;
    display: grid; place-items: center;
    overflow: hidden;
@@ -44,7 +44,7 @@
  h1 { margin: 0 0 12px; font-size: clamp(28px, 3vw, 36px); letter-spacing: .5px; }
  .tagline { margin: 0 0 16px; opacity: .9; color: #9ef9ae; font-size: 14px; }
  .divider { height: 1px; background: linear-gradient(90deg, transparent, rgba(0,255,128,0.3), transparent); margin: 16px 0 18px; }
- .info { margin: 0 0 18px; color: #c8facc; opacity: .85; line-height: 1.6; }
+ .info { margin: 0 0 18px; color: var(--color-ok); opacity: .85; line-height: 1.6; }
  .row { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
  a.button {
    display: inline-flex; align-items: center; gap: 8px;
@@ -79,7 +79,7 @@
    border-radius: 10px;
    border: 1px solid rgba(0,255,128,0.3);
    background: rgba(0,32,16,0.35);
-   color: #c8facc;
+   color: var(--color-ok);
    outline: none;
    transition: box-shadow .15s ease, border-color .15s ease, background .15s ease;
    box-shadow: inset 0 0 24px rgba(0,255,128,0.04);
@@ -97,19 +97,19 @@
    border-radius: 10px;
    border: 1px solid rgba(0,255,128,0.35);
    background: rgba(0,255,128,0.1);
-   color: #c8facc;
+   color: var(--color-ok);
    font-weight: 600;
    cursor: pointer;
    transition: transform .08s ease, box-shadow .12s ease, background .12s ease;
  }
  .btn:hover { background: rgba(0,255,128,0.16); box-shadow: 0 0 0 3px rgba(0,255,128,0.12); transform: translateY(-1px); }
 
- .muted-link { color: #9ef9ae; opacity: .75; text-decoration: none; }
+ .muted-link { color: var(--color-ok); opacity: .75; text-decoration: none; }
  .muted-link:hover { opacity: .95; text-decoration: underline; text-underline-offset: 2px; }
 
- .alert { color: #ffb3b3; opacity: .75; text-decoration: none; }
+ .alert { color: var(--color-alert); opacity: .75; text-decoration: none; }
  .alert:hover { opacity: .95; text-decoration: underline; text-underline-offset: 2px; }
 
  .flash { margin-bottom: 10px; padding: 10px 12px; border-radius: 10px; font-size: 14px; }
- .flash--alert { color: #ffb3b3; background: rgba(255, 64, 64, 0.08); border: 1px solid rgba(255, 64, 64, 0.3); }
- .flash--notice { color: #c8facc; background: rgba(0, 255, 128, 0.08); border: 1px solid rgba(0, 255, 128, 0.3); }
+ .flash--alert { color: var(--color-alert); background: rgba(255, 64, 64, 0.08); border: 1px solid rgba(255, 64, 64, 0.3); }
+ .flash--notice { color: var(--color-ok); background: rgba(0, 255, 128, 0.08); border: 1px solid rgba(0, 255, 128, 0.3); }
