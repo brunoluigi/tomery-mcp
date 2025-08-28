@@ -19,7 +19,7 @@ class AddRecipeTool < ApplicationTool
   def call(token:, title:, description:, ingredients:, instructions:)
     user = find_user_by_token(token)
 
-    recipe = AddRecipeService.call!(user:, title:, description:, ingredients:, instructions:)
+    recipe = Tools::AddRecipeService.call!(user:, title:, description:, ingredients:, instructions:)
 
     "Created with ID: #{recipe.id}"
   end

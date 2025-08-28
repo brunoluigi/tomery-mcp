@@ -16,7 +16,7 @@ class AddPantryItemsTool < ApplicationTool
   def call(token:, pantry_items:)
     user = find_user_by_token(token)
 
-    AddPantryItemsService.call!(user:, pantry_items:)
+    Tools::AddPantryItemsService.call!(user:, pantry_items:)
 
     "OK"
   end

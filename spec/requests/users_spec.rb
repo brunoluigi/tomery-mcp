@@ -120,6 +120,17 @@ RSpec.describe "/users", type: :request do
       }.to change { user.reload.active }
     end
 
+    it "queues user activation mailer" do
+      admin = FactoryBot.create(:user, admin: true, active: true)
+      user = FactoryBot.create(:user, active: false)
+
+      sign_in_as(admin)
+
+      expect {
+        put toggle_activate_user_url(user)
+      }.to enqueue_mail(UserMailer, :activated)
+    end
+
     it "redirects to the users list" do
       admin = FactoryBot.create(:user, admin: true, active: true)
       user = FactoryBot.create(:user)

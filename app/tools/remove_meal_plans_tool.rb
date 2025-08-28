@@ -11,7 +11,7 @@ class RemoveMealPlansTool < ApplicationTool
   def call(token:, ids:)
     user = find_user_by_token(token)
 
-    RemoveMealPlansService.call(user:, ids:)
+    Tools::RemoveMealPlansService.call(user:, ids:)
 
     "Meal plan removed successfully"
   end
