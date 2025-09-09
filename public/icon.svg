@@ -1,3 +1,65 @@
-<svg width="512" height="512" xmlns="http://www.w3.org/2000/svg">
-  <circle cx="256" cy="256" r="256" fill="red"/>
+<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128" role="img" aria-labelledby="title desc">
+  <title id="title">8-bit CRT Green Soup Bowl Icon</title>
+  <desc id="desc">Pixel-art green bowl with steaming soup, CRT scanlines and glow.</desc>
+
+  <defs>
+    <!-- CRT glow -->
+    <filter id="crtGlow" filterUnits="userSpaceOnUse" x="-20" y="-20" width="168" height="168">
+      <feGaussianBlur stdDeviation="2.2" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+      </feMerge>
+    </filter>
+
+    <!-- Horizontal scanlines -->
+    <pattern id="scanlines" patternUnits="userSpaceOnUse" patternContentUnits="userSpaceOnUse" width="128" height="4">
+      <rect x="0" y="0" width="128" height="1.4" fill="#002814"/>
+    </pattern>
+
+    <style>
+      /* Tweak these if you want a different green palette */
+      .bright { fill: #39ff14; }   /* neon phosphor */
+      .mid    { fill: #15d06b; }   /* mid tone */
+      .dark   { fill: #0a7a46; }   /* rim/shadow */
+    </style>
+  </defs>
+
+  <!-- Pixel art group (16x16 grid, 8px per cell) -->
+  <g id="art" shape-rendering="crispEdges">
+    <!-- Steam -->
+    <rect class="bright" x="48" y="16" width="8" height="8"/>
+    <rect class="bright" x="48" y="32" width="8" height="8"/>
+    <rect class="bright" x="48" y="48" width="8" height="8"/>
+
+    <rect class="bright" x="64" y="24" width="8" height="8"/>
+    <rect class="bright" x="64" y="40" width="8" height="8"/>
+    <rect class="bright" x="64" y="56" width="8" height="8"/>
+
+    <rect class="bright" x="80" y="16" width="8" height="8"/>
+    <rect class="bright" x="80" y="32" width="8" height="8"/>
+    <rect class="bright" x="80" y="48" width="8" height="8"/>
+
+    <!-- Bowl rim -->
+    <rect class="dark" x="24" y="72" width="80" height="8"/>
+
+    <!-- Soup surface -->
+    <rect class="bright" x="32" y="80" width="64" height="8"/>
+
+    <!-- Bowl body -->
+    <rect class="mid"  x="40" y="88" width="48" height="8"/>
+    <rect class="mid"  x="40" y="96" width="48" height="8"/>
+
+    <!-- Bowl shadow + foot -->
+    <rect class="dark" x="48" y="104" width="32" height="8"/>
+    <rect class="dark" x="56" y="112" width="16" height="8"/>
+  </g>
+
+  <!-- Glow underlay -->
+  <use href="#art" filter="url(#crtGlow)" opacity="0.9"/>
+
+  <!-- Crisp pixels on top -->
+  <use href="#art"/>
+
+  <!-- CRT scanlines overlay -->
+  <rect x="0" y="0" width="128" height="128" fill="url(#scanlines)" opacity="0.35" pointer-events="none"/>
 </svg>
