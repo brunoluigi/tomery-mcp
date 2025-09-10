@@ -11,13 +11,16 @@
 
  :root { color-scheme: dark light; }
  * { box-sizing: border-box; }
- html { height: 100%; margin: 0; }
+ html { height: 100%; margin: 0;
+  scrollbar-color: rgba(0,255,128,0.45)rgba(0,255,128,0.45);
+  scrollbar-width: thin;}
  body {
    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
    color: var(--color-ok);
    background: #0a0f0a;
    display: grid; place-items: center;
-   overflow: auto;
+   overflow-x: hidden;
+   overflow-y: scroll;
  }
 
  /* Animated grid (nerdy vibe) */
@@ -28,6 +31,7 @@
      linear-gradient(90deg, #0f2 1px, transparent 1px) 0 0 / 48px 48px;
    opacity: .08; transform: perspective(600px) rotateX(60deg) translateY(-10vh);
    animation: drift 12s linear infinite;
+   overflow: hidden;
  }
  .grid::after { animation-duration: 18s; opacity: .05; }
  @keyframes drift { to { transform: perspective(600px) rotateX(60deg) translateY(-30vh); } }

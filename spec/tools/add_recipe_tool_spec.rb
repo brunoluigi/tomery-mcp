@@ -38,6 +38,17 @@ RSpec.describe AddRecipeTool do
 
   it 'should not add recipe to user cookbook if ingredients are missing' do
     expect do
+      tool.call_with_schema_validation!(token:, **recipe, ingredients: [ { ingredient: "pasta", amount: "1 packet" } ])
+    end.to(
+      raise_error(FastMcp::Tool::InvalidArgumentsError)
+      .with_message(/name.+is missing.+quantity.+is missing/i)
+    )
+
+    expect(user.recipes.count).to eq(0)
+  end
+
+  it 'should not add recipe to user cookbook if ingredients are in the wrong format' do
+    expect do
       tool.call_with_schema_validation!(token:, **recipe, ingredients: [])
     end.to(
       raise_error(FastMcp::Tool::InvalidArgumentsError)

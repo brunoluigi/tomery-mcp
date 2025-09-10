@@ -22,12 +22,13 @@
     <%= javascript_importmap_tags %>
   </head>
 
-<body class="grid overflow-auto pb-10 pt-10 h-full">
+<body class="grid pb-10 pt-10 h-full">
   <main class="card">
     <% if authenticated? %>
       <div class="mb-5">
-        <% if Current.session.user.admin? %>
         <%= link_to "current session", session_path, class: "muted-link" %> | 
+        <%= link_to "recipes", recipes_path, class: "muted-link" %> | 
+        <% if Current.session.user.admin? %>
           <%= link_to "users", users_path, class: "muted-link" %> | 
         <% end %>
         <%= link_to "sign out", session_path, data: { turbo_method: :delete }, class: "muted-link" %>
@@ -44,7 +45,11 @@
     <% end %>
 
     <%= yield %>
+
   </main>
+  
   <div class="mt-5 pb-10 text-center glow opacity-75">Copyright © 2025 Tomery MCP. All rights reserved.</div>
+
+  <%= turbo_frame_tag "modal" %>
 </body>
 </html>
