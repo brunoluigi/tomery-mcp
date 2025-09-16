@@ -1,4 +1,7 @@
 Rails.application.routes.draw do
+# Model Context Protocol
+post "/mcp", to: "mcp#handle"
+get  "/mcp", to: "mcp#handle"
   resources :recipes, only: %i[index show destroy]
   resources :users do
       put :toggle_activate, on: :member

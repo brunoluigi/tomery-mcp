@@ -1,8 +1,11 @@
 require 'rails_helper'
 
 RSpec.describe AddPantryItemsTool do
-  subject(:tool) { described_class.new }
+  include MCP::Tool::TestHelper
+
+  subject(:tool) { described_class }
   let(:user) { FactoryBot.create(:user) }
+  let(:server_context) { { current_user: user } }
   let(:token) { user.sessions.create!.mcp_token }
 
   it 'should add pantry items to user inventory' do
@@ -11,7 +14,7 @@ RSpec.describe AddPantryItemsTool do
       { name: "Tomato", quantity: "1 kg" }
     ]
 
-    tool.call_with_schema_validation!(token:, pantry_items:)
+    call_tool_with_schema_validation!(tool:, server_context:, token:, pantry_items:)
 
     expect(user.pantry_items.count).to eq(2)
   end
@@ -22,10 +25,9 @@ RSpec.describe AddPantryItemsTool do
     ]
 
     expect do
-      tool.call_with_schema_validation!(token:, pantry_items:)
+      call_tool_with_schema_validation!(tool:, server_context:, token:, pantry_items:)
     end.to(
-      raise_error(FastMcp::Tool::InvalidArgumentsError)
-      .with_message(/name.+is missing/i)
+      raise_error.with_message(/did not contain.+name/i)
     )
 
     expect(user.pantry_items.count).to eq(0)
@@ -37,10 +39,9 @@ RSpec.describe AddPantryItemsTool do
     ]
 
     expect do
-      tool.call_with_schema_validation!(token:, pantry_items:)
+      call_tool_with_schema_validation!(tool:, server_context:, token:, pantry_items:)
     end.to(
-      raise_error(FastMcp::Tool::InvalidArgumentsError)
-      .with_message(/quantity.+is missing/i)
+      raise_error.with_message(/did not contain.+quantity/i)
     )
 
     expect(user.pantry_items.count).to eq(0)

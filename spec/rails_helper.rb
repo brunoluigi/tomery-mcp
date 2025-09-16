@@ -83,3 +83,10 @@ module SignInHelper
     post session_url(email_address: user.email_address, password: user.password)
   end
 end
+
+module MCP::Tool::TestHelper
+  def call_tool_with_schema_validation!(tool:, server_context:, **args)
+    tool.input_schema.validate_arguments(args)
+    tool.call(**args, server_context:)
+  end
+end

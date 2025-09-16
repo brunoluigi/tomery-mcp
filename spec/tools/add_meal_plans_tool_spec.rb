@@ -1,17 +1,20 @@
 require 'rails_helper'
 
 RSpec.describe AddMealPlansTool do
-  subject(:tool) { described_class.new }
+  include MCP::Tool::TestHelper
+
+  subject(:tool) { described_class }
   let(:user) { FactoryBot.create(:user) }
+  let(:server_context) { { current_user: user } }
   let(:token) { user.sessions.create!.mcp_token }
 
   it 'should add meal plans to user calendar' do
     meal_plans = [
-      { recipe_id: FactoryBot.create(:recipe).id, date: Date.today, meal: "breakfast" },
-      { recipe_id: FactoryBot.create(:recipe).id, date: Date.tomorrow, meal: "lunch" }
+      { recipe_id: FactoryBot.create(:recipe).id, date: Date.today.to_s, meal: "breakfast" },
+      { recipe_id: FactoryBot.create(:recipe).id, date: Date.tomorrow.to_s, meal: "lunch" }
     ]
 
-    tool.call_with_schema_validation!(token:, meal_plans:)
+    call_tool_with_schema_validation!(tool:, server_context:, token:, meal_plans:)
 
     expect(user.meal_plans.count).to eq(2)
   end
@@ -22,10 +25,9 @@ RSpec.describe AddMealPlansTool do
     ]
 
     expect do
-      tool.call_with_schema_validation!(token:, meal_plans:)
+      call_tool_with_schema_validation!(tool:, server_context:, token:, meal_plans:)
     end.to(
-      raise_error(FastMcp::Tool::InvalidArgumentsError)
-      .with_message(/date.+is missing/i)
+      raise_error.with_message(/date.+/i)
     )
 
     expect(user.meal_plans.count).to eq(0)
@@ -37,10 +39,9 @@ RSpec.describe AddMealPlansTool do
     ]
 
     expect do
-      tool.call_with_schema_validation!(token:, meal_plans:)
+      call_tool_with_schema_validation!(tool:, server_context:, token:, meal_plans:)
     end.to(
-      raise_error(FastMcp::Tool::InvalidArgumentsError)
-      .with_message(/must be one of: breakfast, lunch, dinner, snack/i)
+      raise_error.with_message(/following values: breakfast, lunch, dinner, snack/i)
     )
 
     expect(user.meal_plans.count).to eq(0)
@@ -50,10 +51,9 @@ RSpec.describe AddMealPlansTool do
     meal_plans = []
 
     expect do
-      tool.call_with_schema_validation!(token:, meal_plans:)
+      call_tool_with_schema_validation!(tool:, server_context:, token:, meal_plans:)
     end.to(
-      raise_error(FastMcp::Tool::InvalidArgumentsError)
-      .with_message(/size cannot be less than 1"/i)
+      raise_error.with_message(/minimum number of items 1/i)
     )
 
     expect(user.meal_plans.count).to eq(0)

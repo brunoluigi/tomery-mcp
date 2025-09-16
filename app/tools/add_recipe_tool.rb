@@ -3,24 +3,42 @@
 class AddRecipeTool < ApplicationTool
   description "Add recipe to users cookbook"
 
-  arguments do
-    required(:token).filled(:string).description("Token of the user's session")
-    required(:title).filled(:string).description("Recipe Title")
-    required(:description).filled(:string).description("Recipe description")
-    required(:ingredients).value(:array, min_size?: 1).description("Recipe ingredients: [{ name: string, quantity: string }]").each do
-      hash do
-        required(:name).filled(:string)
-        required(:quantity).filled(:string)
-      end
-    end
-    required(:instructions).value(:array, min_size?: 1).description("Recipe instructions").each(:str?)
-  end
+  input_schema(
+    properties: {
+      token: { type: "string", description: "Token of the user's session", minLength: 1 },
+      title: { type: "string", description: "Recipe Title", minLength: 1 },
+      description: { type: "string", description: "Recipe description", minLength: 1 },
+      ingredients: {
+        type: "array",
+        minItems: 1,
+        description: "Recipe ingredients: [{ name: string, quantity: string }]",
+        items: {
+          type: "object",
+          properties: {
+            name: { type: "string", minLength: 1 },
+            quantity: { type: "string", minLength: 1 }
+          },
+          required: [ "name", "quantity" ]
+        }
+      },
+      instructions: {
+        type: "array",
+        minItems: 1,
+        description: "Recipe instructions: [string]",
+        items: { type: "string", minLength: 1 }
+      }
+    },
+    required: [ "token", "title", "description", "ingredients", "instructions" ]
+  )
 
-  def call(token:, title:, description:, ingredients:, instructions:)
-    user = find_user_by_token(token)
+  def self.call(token:, title:, description:, ingredients:, instructions:, server_context:)
+    user = server_context[:current_user]
 
     recipe = Tools::AddRecipeService.call!(user:, title:, description:, ingredients:, instructions:)
 
-    "Created with ID: #{recipe.id}"
+    MCP::Tool::Response.new([ {
+      type: "text",
+      text: "Created with ID: #{recipe.id}"
+    } ])
   end
 end
