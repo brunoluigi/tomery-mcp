@@ -72,4 +72,3 @@ RSpec.describe AddRecipeTool do
     expect(user.recipes.count).to eq(0)
   end
 end
-

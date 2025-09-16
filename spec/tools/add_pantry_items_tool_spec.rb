@@ -47,4 +47,3 @@ RSpec.describe AddPantryItemsTool do
     expect(user.pantry_items.count).to eq(0)
   end
 end
-

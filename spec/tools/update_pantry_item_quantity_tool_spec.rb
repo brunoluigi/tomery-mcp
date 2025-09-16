@@ -41,4 +41,3 @@ RSpec.describe UpdatePantryItemQuantityTool do
     )
   end
 end
-

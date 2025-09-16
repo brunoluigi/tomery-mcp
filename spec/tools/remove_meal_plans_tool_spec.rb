@@ -32,4 +32,3 @@ RSpec.describe RemoveMealPlansTool do
     )
   end
 end
-

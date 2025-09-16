@@ -39,4 +39,3 @@ RSpec.describe ListMealPlansTool do
     )
   end
 end
-

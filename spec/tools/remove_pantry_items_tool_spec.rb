@@ -32,4 +32,3 @@ RSpec.describe RemovePantryItemsTool do
     )
   end
 end
-

@@ -71,4 +71,3 @@ RSpec.describe UpdateRecipeTool do
     )
   end
 end
-
