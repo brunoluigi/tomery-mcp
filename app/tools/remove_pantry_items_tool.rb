@@ -3,16 +3,27 @@
 class RemovePantryItemsTool < ApplicationTool
   description "Remove pantry items from user's inventory"
 
-  arguments do
-    required(:token).filled(:string).description("Token of the user's session")
-    required(:ids).array(:string, min_size?: 1).description("Pantry item ids")
-  end
+  input_schema(
+    properties: {
+      token: { type: "string", description: "Token of the user's session", minLength: 1 },
+      ids: {
+        type: "array",
+        minItems: 1,
+        description: "Pantry item ids",
+        items: { type: "string", minLength: 1 }
+      }
+    },
+    required: [ "token", "ids" ]
+  )
 
-  def call(token:, ids:)
-    user = find_user_by_token(token)
+  def self.call(token:, ids:, server_context:)
+    user = server_context[:current_user]
 
     Tools::RemovePantryItemsService.call(user:, ids:)
 
-    "OK"
+    MCP::Tool::Response.new([ {
+      type: "text",
+      text: "OK"
+    } ])
   end
 end

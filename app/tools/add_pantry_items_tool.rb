@@ -3,21 +3,34 @@
 class AddPantryItemsTool < ApplicationTool
   description "Add pantry items to user's inventory"
 
-  arguments do
-    required(:token).filled(:string).description("Token of the user's session")
-    required(:pantry_items).array(min_size?: 1).description("Pantry items: [{ name: string, quantity: string }]").each do
-      hash do
-        required(:name).filled(:string).description("Pantry item description")
-        required(:quantity).filled(:string).description("Pantry item quantity")
-      end
-    end
-  end
+  input_schema(
+    properties: {
+      token: { type: "string", description: "Token of the user's session", minLength: 1 },
+      pantry_items: {
+        type: "array",
+        minItems: 1,
+        description: "Pantry items: [{ name: string, quantity: string }]",
+        items: {
+          type: "object",
+          properties: {
+            name: { type: "string", description: "Pantry item description", minLength: 1 },
+            quantity: { type: "string", description: "Pantry item quantity", minLength: 1 }
+          },
+          required: [ "name", "quantity" ]
+        }
+      }
+    },
+    required: [ "token", "pantry_items" ]
+  )
 
-  def call(token:, pantry_items:)
-    user = find_user_by_token(token)
+  def self.call(token:, pantry_items:, server_context:)
+    user = server_context[:current_user]
 
     Tools::AddPantryItemsService.call!(user:, pantry_items:)
 
-    "OK"
+    MCP::Tool::Response.new([ {
+      type: "text",
+      text: "OK"
+    } ])
   end
 end

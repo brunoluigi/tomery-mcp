@@ -3,13 +3,19 @@
 class ListRecipesTool < ApplicationTool
   description "List user recipies"
 
-  arguments do
-    required(:token).filled(:string).description("Token of the user's session")
-  end
+  input_schema(
+    properties: {
+      token: { type: "string", description: "Token of the user's session", minLength: 1 }
+    },
+    required: [ "token" ]
+  )
 
-  def call(token:)
-    user = find_user_by_token(token)
+  def self.call(token:, server_context:)
+    user = server_context[:current_user]
 
-    JSON.generate(user.recipes.as_json(only: [ :id, :title, :description ]))
+    MCP::Tool::Response.new([ {
+      type: "text",
+      text: JSON.generate(user.recipes.as_json(only: [ :id, :title, :description ]))
+    } ])
   end
 end

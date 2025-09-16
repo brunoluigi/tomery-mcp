@@ -42,7 +42,7 @@ The application provides MCP tools for programmatic access to all features:
 - **Database**: PostgreSQL
 - **Authentication**: bcrypt for password hashing
 - **Frontend**: Turbo/Stimulus with importmap
-- **MCP Integration**: fast-mcp gem
+- **MCP Integration**: mcp gem and mcp-on-rails template
 - **Deployment**: Kamal-ready with Docker support
 
 ## Getting Started

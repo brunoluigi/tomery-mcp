@@ -1,8 +1,11 @@
 require 'rails_helper'
 
 RSpec.describe AddRecipeTool do
-  subject(:tool) { described_class.new }
+  include MCP::Tool::TestHelper
+
+  subject(:tool) { described_class }
   let(:user) { FactoryBot.create(:user) }
+  let(:server_context) { { current_user: user } }
   let(:token) { user.sessions.create!.mcp_token }
   let(:recipe) do
     {
@@ -20,17 +23,17 @@ RSpec.describe AddRecipeTool do
   end
 
   it 'should add recipe to user cookbook' do
-    tool.call_with_schema_validation!(token:, **recipe)
+    call_tool_with_schema_validation!(tool:, server_context:, token:, **recipe)
 
     expect(user.recipes.count).to eq(1)
   end
 
   it 'should not add recipe to user cookbook if title or description are missing' do
     expect do
-      tool.call_with_schema_validation!(token:, **recipe.except(:title, :description))
+      call_tool_with_schema_validation!(tool:, server_context:, token:, **recipe.except(:title, :description))
     end.to(
-      raise_error(FastMcp::Tool::InvalidArgumentsError)
-      .with_message(/title.+is missing.+description.+is missing/i)
+      raise_error
+      .with_message(/did not contain.+title.+description/i)
     )
 
     expect(user.recipes.count).to eq(0)
@@ -38,10 +41,10 @@ RSpec.describe AddRecipeTool do
 
   it 'should not add recipe to user cookbook if ingredients are missing' do
     expect do
-      tool.call_with_schema_validation!(token:, **recipe, ingredients: [ { ingredient: "pasta", amount: "1 packet" } ])
+      call_tool_with_schema_validation!(tool:, server_context:, token:, **recipe, ingredients: [ { ingredient: "pasta", amount: "1 packet" } ])
     end.to(
-      raise_error(FastMcp::Tool::InvalidArgumentsError)
-      .with_message(/name.+is missing.+quantity.+is missing/i)
+      raise_error
+      .with_message(/did not contain.+name.+quantity/i)
     )
 
     expect(user.recipes.count).to eq(0)
@@ -49,23 +52,24 @@ RSpec.describe AddRecipeTool do
 
   it 'should not add recipe to user cookbook if ingredients are in the wrong format' do
     expect do
-      tool.call_with_schema_validation!(token:, **recipe, ingredients: [])
+      call_tool_with_schema_validation!(tool:, server_context:, token:, **recipe, ingredients: [])
     end.to(
-      raise_error(FastMcp::Tool::InvalidArgumentsError)
-      .with_message(/size cannot be less than 1/i)
+      raise_error
+      .with_message(/minimum number of items 1/i)
     )
 
     expect(user.recipes.count).to eq(0)
   end
 
-  it 'should not add recipe to user cookbook if ingredients are missing' do
+  it 'should not add recipe to user cookbook if instructions are missing' do
     expect do
-      tool.call_with_schema_validation!(token:, **recipe, instructions: [])
+      call_tool_with_schema_validation!(tool:, server_context:, token:, **recipe, instructions: [])
     end.to(
-      raise_error(FastMcp::Tool::InvalidArgumentsError)
-      .with_message(/size cannot be less than 1/i)
+      raise_error
+      .with_message(/minimum number of items 1/i)
     )
 
     expect(user.recipes.count).to eq(0)
   end
 end
+

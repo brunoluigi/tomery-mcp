@@ -1,8 +1,11 @@
 require 'rails_helper'
 
 RSpec.describe ListPantryItemsTool do
-  subject(:tool) { described_class.new }
+  include MCP::Tool::TestHelper
+
+  subject(:tool) { described_class }
   let(:user) { FactoryBot.create(:user) }
+  let(:server_context) { { current_user: user } }
   let(:token) { user.sessions.create!.mcp_token }
 
   before {
@@ -12,8 +15,8 @@ RSpec.describe ListPantryItemsTool do
   }
 
   it 'should list pantry items for user' do
-    pantry_items, _ = tool.call_with_schema_validation!(token:)
+    response = call_tool_with_schema_validation!(tool:, server_context:, token:)
 
-    expect(JSON.parse(pantry_items).count).to eq(2)
+    expect(JSON.parse(response.content.first[:text]).count).to eq(2)
   end
 end

@@ -3,22 +3,35 @@
 class AddMealPlansTool < ApplicationTool
   description "Add meal plans to user's calendar"
 
-  arguments do
-    required(:token).filled(:string).description("Token of the user's session")
-    required(:meal_plans).value(:array, min_size?: 1).description("Meal plans array of objects: [{recipe_id: string, date: date, meal: [breakfast|lunch|dinner|snack]}]").each do
-      hash do
-        required(:recipe_id).filled(:string).description("Recipe ID")
-        required(:date).filled(:date).description("Date of the meal")
-        required(:meal).filled(:string).value(included_in?: [ "breakfast", "lunch", "dinner", "snack" ]).description("Meal of the day: breakfast, lunch, dinner, snack")
-      end
-    end
-  end
+  input_schema(
+    properties: {
+      token: { type: "string", description: "Token of the user's session", minLength: 1 },
+      meal_plans: {
+        type: "array",
+        minItems: 1,
+        description: "Meal plans array of objects: [{recipe_id: string, date: date, meal: [breakfast|lunch|dinner|snack]}]",
+        items: {
+          type: "object",
+          properties: {
+            recipe_id: { type: "string", description: "Recipe ID", minLength: 1 },
+            date: { type: "string", format: "date", description: "Date of the meal", minLength: 1 },
+            meal: { type: "string", enum: [ "breakfast", "lunch", "dinner", "snack" ], description: "Meal of the day: breakfast, lunch, dinner, snack" }
+          },
+          required: [ "recipe_id", "date", "meal" ]
+        }
+      }
+    },
+    required: [ "token", "meal_plans" ]
+  )
 
-  def call(token:, meal_plans:)
-    user = find_user_by_token(token)
+  def self.call(token:, meal_plans:, server_context:)
+    user = server_context[:current_user]
 
     Tools::AddMealPlansService.call!(user:, meal_plans:)
 
-    "OK"
+    MCP::Tool::Response.new([ {
+          type: "text",
+          text: "OK"
+        } ])
   end
 end

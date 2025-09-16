@@ -3,17 +3,23 @@
 class ListMealPlansTool < ApplicationTool
   description "List user meals for a given date interval"
 
-  arguments do
-    required(:token).filled(:string).description("Token of the user's session")
-    required(:start_date).filled(:date).description("Start date of the interval")
-    required(:end_date).filled(:date).description("End date of the interval")
-  end
+  input_schema(
+    properties: {
+      token: { type: "string", description: "Token of the user's session", minLength: 1 },
+      start_date: { type: "string", format: "date", description: "Start date of the interval", minLength: 1 },
+      end_date: { type: "string", format: "date", description: "End date of the interval", minLength: 1 }
+    },
+    required: [ "token", "start_date", "end_date" ]
+  )
 
-  def call(token:, start_date:, end_date:)
-    user = find_user_by_token(token)
+  def self.call(token:, start_date:, end_date:, server_context:)
+    user = server_context[:current_user]
 
     meal_plans = Tools::ListMealPlansService.call(user:, start_date:, end_date:)
 
-    JSON.generate(meal_plans.as_json(only: [ :id, :date, :meal ], include: { recipe: { only: [ :id, :title, :description ] } }))
+    MCP::Tool::Response.new([ {
+      type: "text",
+      text: JSON.generate(meal_plans.as_json(only: [ :id, :date, :meal ], include: { recipe: { only: [ :id, :title, :description ] } }))
+    } ])
   end
 end

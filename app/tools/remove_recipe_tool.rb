@@ -3,16 +3,22 @@
 class RemoveRecipeTool < ApplicationTool
   description "Remove recipe from user's cookbook"
 
-  arguments do
-    required(:token).filled(:string).description("Token of the user's session")
-    required(:id).filled(:string).description("Recipe's ID")
-  end
+  input_schema(
+    properties: {
+      token: { type: "string", description: "Token of the user's session", minLength: 1 },
+      id: { type: "string", description: "Recipe's ID", minLength: 1 }
+    },
+    required: [ "token", "id" ]
+  )
 
-  def call(token:, id:)
-    user = find_user_by_token(token)
+  def self.call(token:, id:, server_context:)
+    user = server_context[:current_user]
 
     Tools::RemoveRecipeService.call(user:, id:)
 
-    "OK"
+    MCP::Tool::Response.new([ {
+      type: "text",
+      text: "OK"
+    } ])
   end
 end
