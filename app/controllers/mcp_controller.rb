@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class McpController < ActionController::API
+  before_action :doorkeeper_authorize!
   before_action :set_current_user, if: :tools_call?
 
   attr_reader :current_user
