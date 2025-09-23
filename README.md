@@ -2,7 +2,7 @@
 
 A Rails application that provides recipe management, pantry tracking, and meal planning capabilities through both a web interface and Model Context Protocol (MCP) integration.
 
-Currently hosted at https://tomery.brunoluigi.com.br
+Currently hosted at https://tomery.passionfruits.dev
 
 ## Features
 
