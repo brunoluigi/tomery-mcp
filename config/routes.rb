@@ -1,6 +1,4 @@
 Rails.application.routes.draw do
-  use_doorkeeper
-
   # Model Context Protocol
   post "/mcp", to: "mcp#handle"
   get "/mcp", to: "mcp#handle"

@@ -1,0 +1,17 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "ruby_lsp",
+      "request": "attach",
+      "name": "Attach to existing server",
+    },
+    {
+      "name": "Debug Rails Server",
+      "type": "rdbg",
+      "request": "launch",
+      "script": "bin/dev",
+      "askParameters": false
+    }
+  ]
+}
