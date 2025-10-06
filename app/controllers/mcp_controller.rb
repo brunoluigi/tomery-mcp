@@ -69,6 +69,8 @@ class McpController < ActionController::API
     # Extract Bearer token from Authorization header (OAuth 2.1 Section 5.1.1)
     auth_header = request.headers["Authorization"]
 
+    Rails.logger.debug("Authorization header: #{auth_header}")
+
     unless auth_header&.start_with?("Bearer ")
       return render_unauthorized("Missing or invalid Authorization header")
     end
@@ -92,11 +94,13 @@ class McpController < ActionController::API
   end
 
   def validate_google_token(token)
-    # Validate Google ID token
+    Rails.logger.debug("Validating token (first 50 chars): #{token[0..50]}...")
+
+    # First, try to validate as Google ID token (JWT)
     validator = GoogleIDToken::Validator.new
     begin
       payload = validator.check(token, ENV["GOOGLE_CLIENT_ID"])
-      return nil unless payload
+      Rails.logger.debug("Google ID token validation successful: #{payload}")
 
       {
         "email" => payload["email"],
@@ -104,8 +108,32 @@ class McpController < ActionController::API
         "picture" => payload["picture"]
       }
     rescue GoogleIDToken::ValidationError => e
-      Rails.logger.error("Google token validation error: #{e.message}")
-      nil
+      Rails.logger.warn("Google ID token validation failed: #{e.message}")
+
+      # If ID token validation fails, try to get user info from access token
+      begin
+        response = HTTParty.get(
+          "https://www.googleapis.com/oauth2/v3/userinfo",
+          headers: { "Authorization" => "Bearer #{token}" }
+        )
+
+        if response.success?
+          user_info = response.parsed_response
+          Rails.logger.debug("Got user info from access token: #{user_info}")
+
+          {
+            "email" => user_info["email"],
+            "name" => user_info["name"],
+            "picture" => user_info["picture"]
+          }
+        else
+          Rails.logger.error("Failed to get user info: #{response.code} - #{response.body}")
+          nil
+        end
+      rescue => e
+        Rails.logger.error("Error getting user info: #{e.message}")
+        nil
+      end
     end
   end
 
