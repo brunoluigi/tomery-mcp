@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_08_26_135004) do
+ActiveRecord::Schema[8.0].define(version: 2025_10_06_112938) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -59,12 +59,17 @@ ActiveRecord::Schema[8.0].define(version: 2025_08_26_135004) do
 
   create_table "users", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "email_address", null: false
-    t.string "password_digest", null: false
+    t.string "password_digest"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.boolean "active", default: false, null: false
     t.boolean "admin", default: false, null: false
+    t.string "provider"
+    t.string "uid"
+    t.string "name"
+    t.string "image_url"
     t.index ["email_address"], name: "index_users_on_email_address", unique: true
+    t.index ["provider", "uid"], name: "index_users_on_provider_and_uid", unique: true
   end
 
   add_foreign_key "meal_plans", "recipes"
