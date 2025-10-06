@@ -4,13 +4,11 @@ class ListPantryItemsTool < ApplicationTool
   description "List user pantry items available for cooking"
 
   input_schema(
-    properties: {
-      token: { type: "string", description: "Token of the user's session", minLength: 1 }
-    },
-    required: [ "token" ]
+    properties: {},
+    required: []
   )
 
-  def self.call(token:, server_context:)
+  def self.call(server_context:)
     user = server_context[:current_user]
 
     MCP::Tool::Response.new([ {

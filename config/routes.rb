@@ -1,7 +1,16 @@
 Rails.application.routes.draw do
-  # Model Context Protocol
+  # Model Context Protocol - POST only per MCP spec
   post "/mcp", to: "mcp#handle"
-  get "/mcp", to: "mcp#handle"
+
+  # OAuth 2.0 Metadata Endpoints (points to Google OAuth)
+  get "/.well-known/oauth-protected-resource", to: "oauth_metadata#protected_resource"
+  options "/.well-known/oauth-protected-resource", to: "oauth_metadata#protected_resource"
+  get "/.well-known/oauth-authorization-server", to: "oauth_metadata#authorization_server"
+  options "/.well-known/oauth-authorization-server", to: "oauth_metadata#authorization_server"
+
+  # OAuth Token Proxy (keeps client_secret secure)
+  post "/oauth/token", to: "oauth_proxy#token"
+  options "/oauth/token", to: "oauth_proxy#token"
 
   resources :recipes, only: %i[index show destroy]
   resources :users do

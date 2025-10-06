@@ -5,7 +5,6 @@ class RemovePantryItemsTool < ApplicationTool
 
   input_schema(
     properties: {
-      token: { type: "string", description: "Token of the user's session", minLength: 1 },
       ids: {
         type: "array",
         minItems: 1,
@@ -13,10 +12,10 @@ class RemovePantryItemsTool < ApplicationTool
         items: { type: "string", minLength: 1 }
       }
     },
-    required: [ "token", "ids" ]
+    required: [ "ids" ]
   )
 
-  def self.call(token:, ids:, server_context:)
+  def self.call(ids:, server_context:)
     user = server_context[:current_user]
 
     Tools::RemovePantryItemsService.call(user:, ids:)

@@ -1,16 +1,14 @@
 # frozen_string_literal: true
 
 class ListRecipesTool < ApplicationTool
-  description "List user recipies"
+  description "List user recipes"
 
   input_schema(
-    properties: {
-      token: { type: "string", description: "Token of the user's session", minLength: 1 }
-    },
-    required: [ "token" ]
+    properties: {},
+    required: []
   )
 
-  def self.call(token:, server_context:)
+  def self.call(server_context:)
     user = server_context[:current_user]
 
     MCP::Tool::Response.new([ {

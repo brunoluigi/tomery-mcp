@@ -5,14 +5,13 @@ class UpdatePantryItemQuantityTool < ApplicationTool
 
   input_schema(
     properties: {
-      token: { type: "string", description: "Token of the user's session", minLength: 1 },
       name: { type: "string", description: "Pantry item name", minLength: 1 },
       quantity: { type: "string", description: "Pantry item quantity", minLength: 1 }
     },
-    required: [ "token", "name", "quantity" ]
+    required: [ "name", "quantity" ]
   )
 
-  def self.call(token:, name:, quantity:, server_context:)
+  def self.call(name:, quantity:, server_context:)
     user = server_context[:current_user]
 
     Tools::UpdatePantryItemQuantityService.call!(user:, name:, quantity:)

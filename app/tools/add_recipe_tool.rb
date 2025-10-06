@@ -5,7 +5,6 @@ class AddRecipeTool < ApplicationTool
 
   input_schema(
     properties: {
-      token: { type: "string", description: "Token of the user's session", minLength: 1 },
       title: { type: "string", description: "Recipe Title", minLength: 1 },
       description: { type: "string", description: "Recipe description", minLength: 1 },
       ingredients: {
@@ -28,10 +27,10 @@ class AddRecipeTool < ApplicationTool
         items: { type: "string", minLength: 1 }
       }
     },
-    required: [ "token", "title", "description", "ingredients", "instructions" ]
+    required: [ "title", "description", "ingredients", "instructions" ]
   )
 
-  def self.call(token:, title:, description:, ingredients:, instructions:, server_context:)
+  def self.call(title:, description:, ingredients:, instructions:, server_context:)
     user = server_context[:current_user]
 
     recipe = Tools::AddRecipeService.call!(user:, title:, description:, ingredients:, instructions:)

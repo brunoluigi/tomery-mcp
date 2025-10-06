@@ -5,7 +5,6 @@ class AddMealPlansTool < ApplicationTool
 
   input_schema(
     properties: {
-      token: { type: "string", description: "Token of the user's session", minLength: 1 },
       meal_plans: {
         type: "array",
         minItems: 1,
@@ -21,10 +20,10 @@ class AddMealPlansTool < ApplicationTool
         }
       }
     },
-    required: [ "token", "meal_plans" ]
+    required: [ "meal_plans" ]
   )
 
-  def self.call(token:, meal_plans:, server_context:)
+  def self.call(meal_plans:, server_context:)
     user = server_context[:current_user]
 
     Tools::AddMealPlansService.call!(user:, meal_plans:)

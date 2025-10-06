@@ -129,6 +129,8 @@ GEM
       raabro (~> 1.4)
     globalid (1.2.1)
       activesupport (>= 6.1)
+    google-id-token (1.4.2)
+      jwt (>= 1)
     hashie (5.0.0)
     httparty (0.23.1)
       csv
@@ -466,6 +468,8 @@ DEPENDENCIES
   debug
   factory_bot_rails (~> 6.5)
   faker (~> 3.5)
+  google-id-token (~> 1.4)
+  httparty (~> 0.22)
   importmap-rails
   jbuilder
   kamal

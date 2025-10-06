@@ -5,7 +5,6 @@ class AddPantryItemsTool < ApplicationTool
 
   input_schema(
     properties: {
-      token: { type: "string", description: "Token of the user's session", minLength: 1 },
       pantry_items: {
         type: "array",
         minItems: 1,
@@ -20,10 +19,10 @@ class AddPantryItemsTool < ApplicationTool
         }
       }
     },
-    required: [ "token", "pantry_items" ]
+    required: [ "pantry_items" ]
   )
 
-  def self.call(token:, pantry_items:, server_context:)
+  def self.call(pantry_items:, server_context:)
     user = server_context[:current_user]
 
     Tools::AddPantryItemsService.call!(user:, pantry_items:)

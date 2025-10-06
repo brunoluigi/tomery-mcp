@@ -5,13 +5,12 @@ class RemoveRecipeTool < ApplicationTool
 
   input_schema(
     properties: {
-      token: { type: "string", description: "Token of the user's session", minLength: 1 },
       id: { type: "string", description: "Recipe's ID", minLength: 1 }
     },
-    required: [ "token", "id" ]
+    required: [ "id" ]
   )
 
-  def self.call(token:, id:, server_context:)
+  def self.call(id:, server_context:)
     user = server_context[:current_user]
 
     Tools::RemoveRecipeService.call(user:, id:)
