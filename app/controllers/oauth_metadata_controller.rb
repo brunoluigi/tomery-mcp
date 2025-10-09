@@ -13,8 +13,9 @@ class OauthMetadataController < ActionController::API
       return
     end
 
+    # Return protected resource metadata pointing to the authorization server
     render json: {
-      resource: mcp_server_url,
+      resource: request.base_url, # The MCP server base URL
       authorization_servers: [ request.base_url ] # Your server proxies Google OAuth
     }
   end
@@ -31,6 +32,7 @@ class OauthMetadataController < ActionController::API
       issuer: request.base_url, # Your server is the issuer (proxies Google)
       authorization_endpoint: "https://accounts.google.com/o/oauth2/v2/auth",
       token_endpoint: "#{request.base_url}/oauth/token", # Proxy to keep client_secret secure
+      registration_endpoint: "#{request.base_url}/oauth/register", # Dynamic Client Registration
       userinfo_endpoint: "https://openidconnect.googleapis.com/v1/userinfo",
       jwks_uri: "https://www.googleapis.com/oauth2/v3/certs",
       response_types_supported: [ "code" ],

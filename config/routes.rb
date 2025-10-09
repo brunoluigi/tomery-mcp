@@ -12,6 +12,10 @@ Rails.application.routes.draw do
   post "/oauth/token", to: "oauth_proxy#token"
   options "/oauth/token", to: "oauth_proxy#token"
 
+  # OAuth Dynamic Client Registration (RFC 7591)
+  post "/oauth/register", to: "oauth_registration#register"
+  options "/oauth/register", to: "oauth_registration#register"
+
   resources :recipes, only: %i[index show destroy]
   resources :users do
       put :toggle_activate, on: :member
