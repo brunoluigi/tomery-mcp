@@ -78,7 +78,7 @@ gem "tailwindcss-rails", "~> 4.3"
 
 gem "newrelic_rpm", "~> 9.21"
 
-gem "mcp", "~> 0.3.0"
+gem "mcp", "~> 0.4.0"
 
 # OAuth authentication
 gem "omniauth-google-oauth2", "~> 1.1"
