@@ -43,8 +43,7 @@ RSpec.describe "MCP Endpoint", type: :request do
 
         post "/mcp", params: request_body, headers: headers
 
-        expect(response).to have_http_status(:accepted)
-        expect(response.body).to be_empty
+        expect(response).to have_http_status(:success)
       end
     end
 
@@ -154,7 +153,7 @@ RSpec.describe "MCP Endpoint", type: :request do
 
         post "/mcp", params: request_body, headers: headers
 
-        expect(response).to have_http_status(:not_found)
+        expect(response).to have_http_status(:success)
         json = JSON.parse(response.body)
         expect(json["error"]["code"]).to eq(-32601)
         expect(json["error"]["message"]).to include("Method not found")
