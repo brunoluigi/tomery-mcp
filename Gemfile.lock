@@ -179,7 +179,7 @@ GEM
       net-smtp
     marcel (1.0.4)
     matrix (0.4.3)
-    mcp (0.3.0)
+    mcp (0.4.0)
       json-schema (>= 4.1)
       json_rpc_handler (~> 0.1)
     mini_mime (1.1.5)
@@ -469,7 +469,7 @@ DEPENDENCIES
   importmap-rails
   jbuilder
   kamal
-  mcp (~> 0.3.0)
+  mcp (~> 0.4.0)
   newrelic_rpm (~> 9.21)
   omniauth-google-oauth2 (~> 1.1)
   omniauth-rails_csrf_protection (~> 1.0)

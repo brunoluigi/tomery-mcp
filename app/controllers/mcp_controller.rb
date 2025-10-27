@@ -17,29 +17,8 @@ class McpController < ActionController::API
       return
     end
 
-    method = params[:method]
-
-    case method
-    when "initialize"
-      # Initialize is public - no auth required
-      render(json: mcp_server.handle_json(request.body.read))
-    when "notifications/initialized"
-      # Notification that client has initialized - acknowledge it
-      head :accepted
-    when "tools/list", "tools/call"
-      # These require authentication (handled by before_action)
-      render(json: mcp_server.handle_json(request.body.read))
-    else
-      # Unknown method
-      render(json: {
-        jsonrpc: "2.0",
-        id: params[:id],
-        error: {
-          code: -32601,
-          message: "Method not found: #{method}"
-        }
-      }, status: :not_found)
-    end
+    # These require authentication (handled by before_action)
+    render(json: mcp_server.handle_json(request.body.read))
   end
 
   private
