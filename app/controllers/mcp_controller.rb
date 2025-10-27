@@ -66,7 +66,7 @@ class McpController < ActionController::API
   end
 
   def set_current_user
-    # Extract Bearer token from Authorization header (OAuth 2.1 Section 5.1.1)
+    # Extract Bearer token from Authorization header
     auth_header = request.headers["Authorization"]
 
     Rails.logger.debug("Authorization header: #{auth_header}")
@@ -77,64 +77,14 @@ class McpController < ActionController::API
 
     token = auth_header.sub("Bearer ", "")
 
-    # Validate Google OAuth token
-    user_info = validate_google_token(token)
-    unless user_info
-      return render_unauthorized("Invalid or expired access token")
-    end
-
-    # Find or create user from Google OAuth token
-    @current_user = User.find_by(email_address: user_info["email"])
+    # Find user by MCP token
+    @current_user = User.find_by_mcp_token(token)
 
     unless @current_user
-      render_unauthorized("User not found")
+      render_unauthorized("Invalid or expired access token")
     end
 
     @current_user
-  end
-
-  def validate_google_token(token)
-    Rails.logger.debug("Validating token (first 50 chars): #{token[0..50]}...")
-
-    # First, try to validate as Google ID token (JWT)
-    validator = GoogleIDToken::Validator.new
-    begin
-      payload = validator.check(token, ENV["GOOGLE_CLIENT_ID"])
-      Rails.logger.debug("Google ID token validation successful: #{payload}")
-
-      {
-        "email" => payload["email"],
-        "name" => payload["name"],
-        "picture" => payload["picture"]
-      }
-    rescue GoogleIDToken::ValidationError => e
-      Rails.logger.warn("Google ID token validation failed: #{e.message}")
-
-      # If ID token validation fails, try to get user info from access token
-      begin
-        response = HTTParty.get(
-          "https://www.googleapis.com/oauth2/v3/userinfo",
-          headers: { "Authorization" => "Bearer #{token}" }
-        )
-
-        if response.success?
-          user_info = response.parsed_response
-          Rails.logger.debug("Got user info from access token: #{user_info}")
-
-          {
-            "email" => user_info["email"],
-            "name" => user_info["name"],
-            "picture" => user_info["picture"]
-          }
-        else
-          Rails.logger.error("Failed to get user info: #{response.code} - #{response.body}")
-          nil
-        end
-      rescue => e
-        Rails.logger.error("Error getting user info: #{e.message}")
-        nil
-      end
-    end
   end
 
   def set_cors_headers
@@ -144,10 +94,6 @@ class McpController < ActionController::API
   end
 
   def render_unauthorized(message)
-    # Add WWW-Authenticate header per RFC 9728 Section 5.1
-    response.headers["WWW-Authenticate"] = 'Bearer realm="MCP Server", ' \
-      "resource_metadata=\"#{request.base_url}/.well-known/oauth-protected-resource\""
-
     render(json: {
       jsonrpc: "2.0",
       id: params["id"],

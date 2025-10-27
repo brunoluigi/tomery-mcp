@@ -59,8 +59,6 @@ RSpec.describe "MCP Endpoint", type: :request do
         post "/mcp", params: request_body, headers: headers
 
         expect(response).to have_http_status(:unauthorized)
-        expect(response.headers["WWW-Authenticate"]).to be_present
-        expect(response.headers["WWW-Authenticate"]).to include("Bearer")
         json = JSON.parse(response.body)
         expect(json["error"]["code"]).to eq(-32001)
         expect(json["error"]["message"]).to include("Authorization header")
@@ -99,7 +97,6 @@ RSpec.describe "MCP Endpoint", type: :request do
         post "/mcp", params: request_body, headers: headers
 
         expect(response).to have_http_status(:unauthorized)
-        expect(response.headers["WWW-Authenticate"]).to be_present
         json = JSON.parse(response.body)
         expect(json["error"]["code"]).to eq(-32001)
         expect(json["error"]["message"]).to include("Authorization header")
