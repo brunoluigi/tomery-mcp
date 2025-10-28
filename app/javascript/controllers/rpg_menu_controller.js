@@ -19,20 +19,8 @@ export default class extends Controller {
   }
 
   handleKeydown(event) {
-    const menuVisible = this.element.offsetParent !== null
-
-    // Handle Escape to go back when NOT on menu
-    if (event.key === "Escape" && !menuVisible) {
-      const backLink = document.querySelector('a[href="/"][data-turbo-frame="content"]')
-      if (backLink) {
-        event.preventDefault()
-        backLink.click()
-        return
-      }
-    }
-
     // Only handle arrow keys and Enter when menu is visible
-    if (!menuVisible) return
+    if (!this.element.offsetParent) return
 
     switch(event.key) {
       case "ArrowDown":
@@ -86,11 +74,9 @@ export default class extends Controller {
   activateSelected() {
     const selectedItem = this.itemTargets[this.selectedValue]
     if (selectedItem) {
-      // Navigate to the URL using Turbo
-      const url = selectedItem.getAttribute('href')
-      if (url) {
-        window.Turbo.visit(url, { frame: 'content' })
-      }
+      // Click the link to let Turbo handle navigation naturally
+      // This will update the URL and use the turbo-frame attribute
+      selectedItem.click()
     }
   }
 }

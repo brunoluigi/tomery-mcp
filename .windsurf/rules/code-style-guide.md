@@ -24,3 +24,6 @@ Keep it short and direct.
 
 **Linear**
 Whenever available, keep any important decision registered at the pertinent Linear Issue, keep it short.
+
+**Git**
+Only commit code if asked.

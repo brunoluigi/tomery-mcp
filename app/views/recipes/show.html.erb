@@ -31,10 +31,10 @@
   
   <div class="flex gap-4">
     <%= link_to "← Back to recipes", recipes_path, 
-        data: { turbo_frame: "content" }, 
+        data: { turbo_frame: "content", turbo_action: "advance" }, 
         class: "inline-block opacity-70 hover:opacity-100 transition-opacity no-underline" %>
     <%= link_to "← Back to menu", root_path, 
-        data: { turbo_frame: "content" }, 
+        data: { turbo_frame: "content", turbo_action: "advance" }, 
         class: "inline-block opacity-70 hover:opacity-100 transition-opacity no-underline" %>
   </div>
 </turbo-frame>
