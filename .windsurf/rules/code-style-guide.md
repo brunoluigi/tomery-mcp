@@ -1,0 +1,26 @@
+---
+trigger: always_on
+---
+
+*Tech stack*
+- Ruby on Rails
+- TailwindCSS
+- Postgres
+- Hotwire
+- Kamal
+- RSpec
+
+**Creating controllers, models, views, migrations files**
+Always use the Ruby on Rails generators using the bin/rails command.
+
+**CSS**
+Always use Tailwind for CSS
+
+**Testing**
+Always create spec files for Models and complex business logic.
+
+**Output style**
+Keep it short and direct.
+
+**Linear**
+Whenever available, keep any important decision registered at the pertinent Linear Issue, keep it short.

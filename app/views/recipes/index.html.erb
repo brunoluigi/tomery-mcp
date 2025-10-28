@@ -1,30 +1,25 @@
-<% content_for :title, "Recipes" %>
-
-<div class="w-full">
-  <% if notice.present? %>
-    <p class="py-2 px-3 bg-green-50 mb-5 text-green-500 font-medium rounded-md inline-block" id="notice"><%= notice %></p>
-  <% end %>
-
-  <div class="flex justify-between items-center">
-    <h1 class="font-bold text-4xl">Recipes</h1>
-    <%#= link_to "New recipe", new_recipe_path, class: "btn" %>
-  </div>
-
-  <div id="recipes" class="min-w-full divide-y divide-gray-200 space-y-5">
+<turbo-frame id="content">
+  <%= render 'shared/dialogue_box', 
+      text: "Let's find something delicious to cook! Here are your recipes:" %>
+  
+  <div class="space-y-4 mb-8">
     <% if @recipes.any? %>
       <% @recipes.each do |recipe| %>
-        <div class="flex flex-col sm:flex-row justify-between items-center pb-5 sm:pb-0">
-          <div class="w-full sm:w-auto my-5 space-y-5">
-            <%= modal_link_helper recipe.title, recipe_path(recipe), class: "muted-link glow" %>
-          </div>
-          <div class="w-full sm:w-auto flex flex-col sm:flex-row items-center space-x-2">
-            <%#= link_to "Edit", edit_recipe_path(recipe), class: "muted-link cursor-pointer" %>
-            <%= button_to "Destroy", recipe, method: :delete, class: "muted-link alert cursor-pointer", data: { turbo_confirm: "Are you sure?" } %>
-          </div>
+        <div class="p-4 border border-[rgba(0,255,128,0.25)] rounded-lg bg-[rgba(0,32,16,0.3)] hover:border-[rgba(0,255,128,0.4)] transition-colors">
+          <%= link_to recipe.title, recipe_path(recipe), 
+              data: { turbo_frame: "content" },
+              class: "text-lg glow no-underline hover:opacity-80" %>
         </div>
       <% end %>
     <% else %>
-      <p class="text-center my-10">No recipes found.</p>
+      <div class="text-center py-10 opacity-70">
+        <p class="mb-4">Your recipe book is empty!</p>
+        <p class="text-sm">Use the MCP tools to add recipes to your collection.</p>
+      </div>
     <% end %>
   </div>
-</div>
+  
+  <%= link_to "← Back to menu", root_path, 
+      data: { turbo_frame: "content" }, 
+      class: "inline-block mt-5 opacity-70 hover:opacity-100 transition-opacity no-underline" %>
+</turbo-frame>

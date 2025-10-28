@@ -1,0 +1,28 @@
+<%= render 'shared/dialogue_box', 
+    text: "Welcome back, Chef! What's your next culinary adventure?" %>
+
+<div class="grid grid-cols-1 md:grid-cols-2 gap-5 mb-8">
+  <%= render 'shared/choice_card',
+      icon: '🍳',
+      title: 'Cook something',
+      description: 'Find recipes based on your pantry',
+      path: recipes_path %>
+  
+  <%= render 'shared/choice_card',
+      icon: '📖',
+      title: 'Discover recipes',
+      description: 'Browse and save new recipes',
+      path: recipes_path %>
+  
+  <%= render 'shared/choice_card',
+      icon: '🥘',
+      title: 'Plan meals',
+      description: 'Organize your weekly menu',
+      path: meal_plans_path %>
+  
+  <%= render 'shared/choice_card',
+      icon: '🏪',
+      title: 'Manage pantry',
+      description: 'Track your ingredients',
+      path: pantry_items_path %>
+</div>

@@ -26,8 +26,9 @@
   <main class="card">
     <% if authenticated? %>
       <div class="mb-5">
+        <%= link_to "menu", root_path, class: "muted-link" %> | 
+        <%= link_to "my stuff", my_stuff_recipes_path, class: "muted-link" %> | 
         <%= link_to "current session", session_path, class: "muted-link" %> | 
-        <%= link_to "recipes", recipes_path, class: "muted-link" %> | 
         <% if Current.session.user.admin? %>
           <%= link_to "users", users_path, class: "muted-link" %> | 
         <% end %>
