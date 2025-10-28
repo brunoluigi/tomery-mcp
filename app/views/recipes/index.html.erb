@@ -1,13 +1,11 @@
-<turbo-frame id="content">
-  <%= render 'shared/dialogue_box', 
-      text: "Let's find something delicious to cook! Here are your recipes:" %>
+<%= render 'shared/dialogue_box', 
+    text: "Let's find something delicious to cook! Here are your recipes:" %>
   
   <div class="space-y-4 mb-8">
     <% if @recipes.any? %>
       <% @recipes.each do |recipe| %>
         <div class="p-4 border border-[rgba(0,255,128,0.25)] rounded-lg bg-[rgba(0,32,16,0.3)] hover:border-[rgba(0,255,128,0.4)] transition-colors">
           <%= link_to recipe.title, recipe_path(recipe), 
-              data: { turbo_frame: "content" },
               class: "text-lg glow no-underline hover:opacity-80" %>
         </div>
       <% end %>
@@ -20,6 +18,4 @@
   </div>
   
   <%= link_to "← Back to menu", root_path, 
-      data: { turbo_frame: "content", turbo_action: "advance" }, 
       class: "inline-block mt-5 opacity-70 hover:opacity-100 transition-opacity no-underline" %>
-</turbo-frame>

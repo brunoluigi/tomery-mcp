@@ -1,6 +1,5 @@
-<turbo-frame id="content">
-  <%= render 'shared/dialogue_box', 
-      text: "Here's what you have in your pantry:" %>
+<%= render 'shared/dialogue_box', 
+    text: "Here's what you have in your pantry:" %>
   
   <div class="space-y-4 mb-8">
     <% if @pantry_items.any? %>
@@ -29,6 +28,4 @@
   </div>
   
   <%= link_to "← Back to menu", root_path, 
-      data: { turbo_frame: "content", turbo_action: "advance" }, 
       class: "inline-block mt-5 opacity-70 hover:opacity-100 transition-opacity no-underline" %>
-</turbo-frame>
