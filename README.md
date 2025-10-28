@@ -69,12 +69,12 @@ rails server
 The application will be available at `http://localhost:3000`
 
 ### MCP Endpoint
-The MCP server is available at `/mcp` with tools for programmatic recipe and meal planning management.
+The MCP server is available at `/mcp` with tools for programmatic recipe and meal planning management. Authentication is done via Bearer tokens. See [MCP_AUTHENTICATION.md](MCP_AUTHENTICATION.md) for setup instructions.
 
 ## Database Schema
 
-- **Users**: Email/password authentication
-- **Sessions**: MCP token-based authentication
+- **Users**: Email/password authentication, optional Google OAuth
+- **Sessions**: Session management with unique MCP tokens for API authentication
 - **Recipes**: Title, description, ingredients (JSON), instructions (JSON)
 - **PantryItems**: Name and quantity tracking
 - **MealPlans**: Date-based meal scheduling with recipe associations

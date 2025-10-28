@@ -13,19 +13,19 @@ RSpec.describe RemovePantryItemsTool do
   let!(:pantry_item_4) { FactoryBot.create(:pantry_item) }
 
   it 'should remove pantry items from user inventory' do
-    call_tool_with_schema_validation!(tool:, server_context:, token:, ids: [ pantry_item_1.id, pantry_item_2.id ])
+    call_tool_with_schema_validation!(tool:, server_context:, ids: [ pantry_item_1.id, pantry_item_2.id ])
 
     expect(user.pantry_items.count).to eq(1)
   end
   it "should remove pantry items from other user's inventory" do
-    call_tool_with_schema_validation!(tool:, server_context:, token:, ids: [ pantry_item_4.id ])
+    call_tool_with_schema_validation!(tool:, server_context:, ids: [ pantry_item_4.id ])
 
     expect(pantry_item_4.reload).to be_persisted
   end
 
   it 'should not remove pantry items from user inventory if ids are missing' do
     expect do
-      call_tool_with_schema_validation!(tool:, server_context:, token:)
+      call_tool_with_schema_validation!(tool:, server_context:)
     end.to(
       raise_error
       .with_message(/did not contain.+ids/i)

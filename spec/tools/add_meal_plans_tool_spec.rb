@@ -14,7 +14,7 @@ RSpec.describe AddMealPlansTool do
       { recipe_id: FactoryBot.create(:recipe).id, date: Date.tomorrow.to_s, meal: "lunch" }
     ]
 
-    call_tool_with_schema_validation!(tool:, server_context:, token:, meal_plans:)
+    call_tool_with_schema_validation!(tool:, server_context:, meal_plans:)
 
     expect(user.meal_plans.count).to eq(2)
   end
@@ -25,7 +25,7 @@ RSpec.describe AddMealPlansTool do
     ]
 
     expect do
-      call_tool_with_schema_validation!(tool:, server_context:, token:, meal_plans:)
+      call_tool_with_schema_validation!(tool:, server_context:, meal_plans:)
     end.to(
       raise_error.with_message(/date.+/i)
     )
@@ -39,7 +39,7 @@ RSpec.describe AddMealPlansTool do
     ]
 
     expect do
-      call_tool_with_schema_validation!(tool:, server_context:, token:, meal_plans:)
+      call_tool_with_schema_validation!(tool:, server_context:, meal_plans:)
     end.to(
       raise_error.with_message(/following values: breakfast, lunch, dinner, snack/i)
     )
@@ -51,7 +51,7 @@ RSpec.describe AddMealPlansTool do
     meal_plans = []
 
     expect do
-      call_tool_with_schema_validation!(tool:, server_context:, token:, meal_plans:)
+      call_tool_with_schema_validation!(tool:, server_context:, meal_plans:)
     end.to(
       raise_error.with_message(/minimum number of items 1/i)
     )

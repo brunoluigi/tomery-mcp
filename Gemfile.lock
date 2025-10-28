@@ -129,8 +129,6 @@ GEM
       raabro (~> 1.4)
     globalid (1.2.1)
       activesupport (>= 6.1)
-    google-id-token (1.4.2)
-      jwt (>= 1)
     hashie (5.0.0)
     httparty (0.23.1)
       csv
@@ -181,7 +179,7 @@ GEM
       net-smtp
     marcel (1.0.4)
     matrix (0.4.3)
-    mcp (0.3.0)
+    mcp (0.4.0)
       json-schema (>= 4.1)
       json_rpc_handler (~> 0.1)
     mini_mime (1.1.5)
@@ -468,12 +466,10 @@ DEPENDENCIES
   debug
   factory_bot_rails (~> 6.5)
   faker (~> 3.5)
-  google-id-token (~> 1.4)
-  httparty (~> 0.22)
   importmap-rails
   jbuilder
   kamal
-  mcp (~> 0.3.0)
+  mcp (~> 0.4.0)
   newrelic_rpm (~> 9.21)
   omniauth-google-oauth2 (~> 1.1)
   omniauth-rails_csrf_protection (~> 1.0)

@@ -12,19 +12,19 @@ RSpec.describe RemoveRecipeTool do
   let!(:recipe_3) { FactoryBot.create(:recipe) }
 
   it 'should remove recipe from user cookbook' do
-    call_tool_with_schema_validation!(tool: tool, server_context: server_context, token: token, id: recipe_1.id)
+    call_tool_with_schema_validation!(tool: tool, server_context: server_context, id: recipe_1.id)
 
     expect(user.recipes.count).to eq(1)
   end
   it "should remove recipe from other user's cookbook" do
-    call_tool_with_schema_validation!(tool: tool, server_context: server_context, token: token, id: recipe_3.id)
+    call_tool_with_schema_validation!(tool: tool, server_context: server_context, id: recipe_3.id)
 
     expect(recipe_3.reload).to be_persisted
   end
 
   it 'should not remove recipe from user cookbook if id are missing' do
     expect do
-      call_tool_with_schema_validation!(tool: tool, server_context: server_context, token: token)
+      call_tool_with_schema_validation!(tool: tool, server_context: server_context)
     end.to(
       raise_error
       .with_message(/did not contain.+id/i)

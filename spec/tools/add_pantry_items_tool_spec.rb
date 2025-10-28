@@ -14,7 +14,7 @@ RSpec.describe AddPantryItemsTool do
       { name: "Tomato", quantity: "1 kg" }
     ]
 
-    call_tool_with_schema_validation!(tool:, server_context:, token:, pantry_items:)
+    call_tool_with_schema_validation!(tool:, server_context:, pantry_items:)
 
     expect(user.pantry_items.count).to eq(2)
   end
@@ -25,7 +25,7 @@ RSpec.describe AddPantryItemsTool do
     ]
 
     expect do
-      call_tool_with_schema_validation!(tool:, server_context:, token:, pantry_items:)
+      call_tool_with_schema_validation!(tool:, server_context:, pantry_items:)
     end.to(
       raise_error.with_message(/did not contain.+name/i)
     )
@@ -39,7 +39,7 @@ RSpec.describe AddPantryItemsTool do
     ]
 
     expect do
-      call_tool_with_schema_validation!(tool:, server_context:, token:, pantry_items:)
+      call_tool_with_schema_validation!(tool:, server_context:, pantry_items:)
     end.to(
       raise_error.with_message(/did not contain.+quantity/i)
     )
