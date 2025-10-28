@@ -19,8 +19,20 @@ export default class extends Controller {
   }
 
   handleKeydown(event) {
+    const menuVisible = this.element.offsetParent !== null
+
+    // Handle Escape to go back when NOT on menu
+    if (event.key === "Escape" && !menuVisible) {
+      const backLink = document.querySelector('a[href="/"][data-turbo-frame="content"]')
+      if (backLink) {
+        event.preventDefault()
+        backLink.click()
+        return
+      }
+    }
+
     // Only handle arrow keys and Enter when menu is visible
-    if (!this.element.offsetParent) return
+    if (!menuVisible) return
 
     switch(event.key) {
       case "ArrowDown":
@@ -51,18 +63,18 @@ export default class extends Controller {
   selectItem(index) {
     this.selectedValue = index
     
-    // Remove focus from all items
+    // Remove selection from all items
     this.itemTargets.forEach(item => {
       item.classList.remove("border-[rgba(0,255,128,0.8)]", "shadow-[0_0_30px_rgba(0,255,128,0.3)]")
       item.classList.add("border-[rgba(0,255,128,0.25)]")
+      item.blur() // Remove focus to prevent blue outline
     })
     
-    // Focus the selected item
+    // Highlight the selected item (without focusing to avoid blue outline)
     const selectedItem = this.itemTargets[index]
     if (selectedItem) {
       selectedItem.classList.remove("border-[rgba(0,255,128,0.25)]")
       selectedItem.classList.add("border-[rgba(0,255,128,0.8)]", "shadow-[0_0_30px_rgba(0,255,128,0.3)]")
-      selectedItem.focus()
     }
   }
 
@@ -74,7 +86,11 @@ export default class extends Controller {
   activateSelected() {
     const selectedItem = this.itemTargets[this.selectedValue]
     if (selectedItem) {
-      selectedItem.click()
+      // Navigate to the URL using Turbo
+      const url = selectedItem.getAttribute('href')
+      if (url) {
+        window.Turbo.visit(url, { frame: 'content' })
+      }
     }
   }
 }
