@@ -9,7 +9,12 @@
  * Consider organizing styles into separate files for maintainability.
  */
 
- :root { color-scheme: dark light; }
+ :root { 
+  color-scheme: dark light;
+  
+  /* Tailwind v4 spacing scale (0.25rem = 4px base) */
+  --spacing: 0.25rem;
+}
  * { box-sizing: border-box; }
  html { height: 100%; margin: 0;
   scrollbar-color: rgba(0,255,128,0.45)rgba(0,255,128,0.45);

@@ -1,5 +1,11 @@
-<%= link_to path, data: { turbo_frame: "content" }, class: "block p-6 border border-[rgba(0,255,128,0.25)] rounded-xl bg-[rgba(0,32,16,0.4)] no-underline transition-all duration-300 hover:border-[rgba(0,255,128,0.6)] hover:shadow-[0_0_20px_rgba(0,255,128,0.2)] hover:-translate-y-0.5 cursor-pointer" do %>
-  <div class="text-5xl mb-3"><%= icon %></div>
+<%= link_to path, 
+    data: { 
+      turbo_frame: "content",
+      rpg_menu_target: "item",
+      index: index,
+      action: "click->rpg-menu#select"
+    }, 
+    class: "block p-6 border border-[rgba(0,255,128,0.25)] rounded-xl bg-[rgba(0,32,16,0.4)] no-underline transition-all duration-300 hover:border-[rgba(0,255,128,0.6)] hover:shadow-[0_0_20px_rgba(0,255,128,0.2)] cursor-pointer outline-none focus:border-[rgba(0,255,128,0.8)] focus:shadow-[0_0_30px_rgba(0,255,128,0.3)]" do %>
   <h3 class="text-xl mb-2 glow"><%= title %></h3>
   <p class="text-sm opacity-80 text-[#9ef9ae]"><%= description %></p>
 <% end %>
