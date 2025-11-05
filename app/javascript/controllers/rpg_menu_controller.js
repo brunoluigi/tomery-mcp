@@ -6,30 +6,33 @@ export default class extends Controller {
   static values = { selected: Number }
 
   connect() {
-    // Focus on first item when menu loads
-    this.selectItem(this.selectedValue)
+    console.debug("RPG Menu Controller connected")
+
+    this.selectItem(this.selectedValue || 0)
     
-    // Listen for keyboard events on the window
     this.boundHandleKeydown = this.handleKeydown.bind(this)
+
     window.addEventListener("keydown", this.boundHandleKeydown)
   }
 
   disconnect() {
+    console.debug("RPG Menu Controller disconnected")
     window.removeEventListener("keydown", this.boundHandleKeydown)
   }
 
   handleKeydown(event) {
-    // Only handle arrow keys and Enter when menu is visible
-    if (!this.element.offsetParent) return
+    console.debug("RPG Menu Controller handleKeydown")
+  
+    if (!this.element.offsetParent) return;
 
     switch(event.key) {
       case "ArrowDown":
         event.preventDefault()
-        this.moveDown()
+        this.selectItem(this.selectedValue + 1)
         break
       case "ArrowUp":
         event.preventDefault()
-        this.moveUp()
+        this.selectItem(this.selectedValue - 1)
         break
       case "Enter":
         event.preventDefault()
@@ -38,44 +41,30 @@ export default class extends Controller {
     }
   }
 
-  moveDown() {
-    const nextIndex = (this.selectedValue + 1) % this.itemTargets.length
-    this.selectItem(nextIndex)
-  }
-
-  moveUp() {
-    const prevIndex = (this.selectedValue - 1 + this.itemTargets.length) % this.itemTargets.length
-    this.selectItem(prevIndex)
-  }
-
   selectItem(index) {
-    this.selectedValue = index
-    
-    // Remove selection from all items
-    this.itemTargets.forEach(item => {
-      item.classList.remove("border-[rgba(0,255,128,0.8)]", "shadow-[0_0_30px_rgba(0,255,128,0.3)]")
-      item.classList.add("border-[rgba(0,255,128,0.25)]")
-      item.blur() // Remove focus to prevent blue outline
-    })
-    
-    // Highlight the selected item (without focusing to avoid blue outline)
-    const selectedItem = this.itemTargets[index]
-    if (selectedItem) {
-      selectedItem.classList.remove("border-[rgba(0,255,128,0.25)]")
-      selectedItem.classList.add("border-[rgba(0,255,128,0.8)]", "shadow-[0_0_30px_rgba(0,255,128,0.3)]")
-    }
-  }
+    console.debug("RPG Menu Controller selectItem", index)
 
-  select(event) {
-    const index = parseInt(event.currentTarget.dataset.index)
-    this.selectItem(index)
+    let newIndex = index;
+    const length = this.itemTargets.length
+
+    if(newIndex < 0) {
+      newIndex = length - 1
+    } else if(newIndex >= length) {
+      newIndex = 0
+    }
+
+    this.selectedValue = newIndex
+    
+    const selectedItem = this.itemTargets[newIndex]
+    if (selectedItem) {
+      selectedItem.focus();
+    }
   }
 
   activateSelected() {
     const selectedItem = this.itemTargets[this.selectedValue]
+
     if (selectedItem) {
-      // Click the link to let Turbo handle navigation naturally
-      // This will update the URL and use the turbo-frame attribute
       selectedItem.click()
     }
   }

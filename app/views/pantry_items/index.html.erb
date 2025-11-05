@@ -1,23 +1,15 @@
 <%= render 'shared/dialogue_box', 
     text: "Here's what you have in your pantry:" %>
   
-  <div class="space-y-4 mb-8">
+  <div class="space-y-4 mb-8" data-controller="rpg-menu">
     <% if @pantry_items.any? %>
-      <% @pantry_items.each do |item| %>
-        <div class="p-4 border border-[rgba(0,255,128,0.25)] rounded-lg bg-[rgba(0,32,16,0.3)] hover:border-[rgba(0,255,128,0.4)] transition-colors">
-          <div class="flex justify-between items-center">
-            <div>
-              <span class="text-lg glow"><%= item.name %></span>
-              <span class="ml-3 opacity-70">
-                Quantity: <%= item.quantity %>
-              </span>
-            </div>
-            <%= button_to "Remove", pantry_item_path(item), 
-                method: :delete, 
-                class: "text-sm opacity-60 hover:opacity-100 transition-opacity",
-                data: { turbo_confirm: "Remove this item?" } %>
-          </div>
-        </div>
+      <% @pantry_items.each.with_index do |item, index| %>
+        <%= render 'shared/choice_card_modal',
+            index: index,
+            title: item.name,
+            description: "Quantity: #{item.quantity}",
+            path: edit_pantry_item_path(item),
+            delete_path: pantry_item_path(item) %>
       <% end %>
     <% else %>
       <div class="text-center py-10 opacity-70">

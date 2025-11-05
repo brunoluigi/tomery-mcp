@@ -5,7 +5,7 @@ Rails.application.routes.draw do
   # RPG-style interfaces (main experience)
   resources :recipes, only: %i[index show]
   resources :meal_plans, only: %i[index show new create destroy]
-  resources :pantry_items, only: %i[index new create update destroy]
+  resources :pantry_items, only: %i[index new create edit update destroy]
 
   # Traditional "My Stuff" views
   namespace :my_stuff do

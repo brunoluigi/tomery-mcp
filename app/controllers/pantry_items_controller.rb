@@ -22,6 +22,11 @@ class PantryItemsController < ApplicationController
     end
   end
 
+  # GET /pantry_items/1/edit
+  def edit
+    @pantry_item = current_user.pantry_items.find(params[:id])
+  end
+
   # PATCH/PUT /pantry_items/1
   def update
     if @pantry_item.update(pantry_item_params)
@@ -34,7 +39,8 @@ class PantryItemsController < ApplicationController
   # DELETE /pantry_items/1
   def destroy
     @pantry_item.destroy!
-    redirect_to pantry_items_path, notice: "Pantry item was successfully removed.", status: :see_other
+
+    redirect_to pantry_items_path, notice: "Pantry item was successfully removed."
   end
 
   private

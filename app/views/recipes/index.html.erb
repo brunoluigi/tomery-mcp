@@ -1,13 +1,13 @@
-<%= render 'shared/dialogue_box', 
-    text: "Let's find something delicious to cook! Here are your recipes:" %>
+<%= render 'shared/dialogue_box', text: "Let's find something delicious to cook! Here are your recipes:" %>
   
-  <div class="space-y-4 mb-8">
+  <div class="space-y-4 mb-8" data-controller="rpg-menu">
     <% if @recipes.any? %>
-      <% @recipes.each do |recipe| %>
-        <div class="p-4 border border-[rgba(0,255,128,0.25)] rounded-lg bg-[rgba(0,32,16,0.3)] hover:border-[rgba(0,255,128,0.4)] transition-colors">
-          <%= link_to recipe.title, recipe_path(recipe), 
-              class: "text-lg glow no-underline hover:opacity-80" %>
-        </div>
+      <% @recipes.each.with_index do |recipe, index| %>
+        <%= render 'shared/choice_card',
+            index: index,
+            title: recipe.title,
+            description: recipe.description,
+            path: recipe_path(recipe) %>
       <% end %>
     <% else %>
       <div class="text-center py-10 opacity-70">
@@ -15,7 +15,10 @@
         <p class="text-sm">Use the MCP tools to add recipes to your collection.</p>
       </div>
     <% end %>
+            <%= render 'shared/choice_card',
+            index: @recipes.length,
+            title: "← Back to menu",
+            description: "Go back to the main menu",
+            path: root_path %>
   </div>
-  
-  <%= link_to "← Back to menu", root_path, 
-      class: "inline-block mt-5 opacity-70 hover:opacity-100 transition-opacity no-underline" %>
+
