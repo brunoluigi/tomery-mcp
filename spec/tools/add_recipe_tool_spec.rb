@@ -23,14 +23,14 @@ RSpec.describe AddRecipeTool do
   end
 
   it 'should add recipe to user cookbook' do
-    call_tool_with_schema_validation!(tool:, server_context:, token:, **recipe)
+    call_tool_with_schema_validation!(tool:, server_context:, **recipe)
 
     expect(user.recipes.count).to eq(1)
   end
 
   it 'should not add recipe to user cookbook if title or description are missing' do
     expect do
-      call_tool_with_schema_validation!(tool:, server_context:, token:, **recipe.except(:title, :description))
+      call_tool_with_schema_validation!(tool:, server_context:, **recipe.except(:title, :description))
     end.to(
       raise_error
       .with_message(/did not contain.+title.+description/i)
@@ -41,7 +41,7 @@ RSpec.describe AddRecipeTool do
 
   it 'should not add recipe to user cookbook if ingredients are missing' do
     expect do
-      call_tool_with_schema_validation!(tool:, server_context:, token:, **recipe, ingredients: [ { ingredient: "pasta", amount: "1 packet" } ])
+      call_tool_with_schema_validation!(tool:, server_context:, **recipe, ingredients: [ { ingredient: "pasta", amount: "1 packet" } ])
     end.to(
       raise_error
       .with_message(/did not contain.+name.+quantity/i)
@@ -52,7 +52,7 @@ RSpec.describe AddRecipeTool do
 
   it 'should not add recipe to user cookbook if ingredients are in the wrong format' do
     expect do
-      call_tool_with_schema_validation!(tool:, server_context:, token:, **recipe, ingredients: [])
+      call_tool_with_schema_validation!(tool:, server_context:, **recipe, ingredients: [])
     end.to(
       raise_error
       .with_message(/minimum number of items 1/i)
@@ -63,7 +63,7 @@ RSpec.describe AddRecipeTool do
 
   it 'should not add recipe to user cookbook if instructions are missing' do
     expect do
-      call_tool_with_schema_validation!(tool:, server_context:, token:, **recipe, instructions: [])
+      call_tool_with_schema_validation!(tool:, server_context:, **recipe, instructions: [])
     end.to(
       raise_error
       .with_message(/minimum number of items 1/i)

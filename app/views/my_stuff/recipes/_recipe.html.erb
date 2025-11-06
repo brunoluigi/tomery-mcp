@@ -1,0 +1,20 @@
+<div class="w-full sm:w-auto my-5 space-y-5">
+    <%= tag.h4 "Ingredients", class: "glow" %>
+
+    <%= tag.ul class: "list-disc pl-4" do %>
+      <% recipe.ingredients.each do |ingredient| %>
+        <%= tag.li do %>
+            <%= tag.div class: "flex flex-row items-end gap-1" do %>
+              <%= tag.span ingredient["name"], class: 'flex' %> <hr class="flex-grow border-dashed h-full mb-1" /> <%= tag.span ingredient["quantity"], class: "flex" %>
+            <% end %>
+        <% end %>
+      <% end %>
+    <% end %>
+
+    <%= tag.h4 "Instructions", class: "glow" %>
+    <%= tag.ul class: "list-decimal pr-2 pl-8 space-y-4" do %>
+      <% recipe.instructions.each do |instruction| %>
+        <%= tag.li instruction %>
+      <% end %>
+    <% end %>
+</div>

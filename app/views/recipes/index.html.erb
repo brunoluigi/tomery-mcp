@@ -1,30 +1,24 @@
-<% content_for :title, "Recipes" %>
-
-<div class="w-full">
-  <% if notice.present? %>
-    <p class="py-2 px-3 bg-green-50 mb-5 text-green-500 font-medium rounded-md inline-block" id="notice"><%= notice %></p>
-  <% end %>
-
-  <div class="flex justify-between items-center">
-    <h1 class="font-bold text-4xl">Recipes</h1>
-    <%#= link_to "New recipe", new_recipe_path, class: "btn" %>
-  </div>
-
-  <div id="recipes" class="min-w-full divide-y divide-gray-200 space-y-5">
+<%= render 'shared/dialogue_box', text: "Let's find something delicious to cook! Here are your recipes:" %>
+  
+  <div class="space-y-4 mb-8" data-controller="rpg-menu">
     <% if @recipes.any? %>
-      <% @recipes.each do |recipe| %>
-        <div class="flex flex-col sm:flex-row justify-between items-center pb-5 sm:pb-0">
-          <div class="w-full sm:w-auto my-5 space-y-5">
-            <%= modal_link_helper recipe.title, recipe_path(recipe), class: "muted-link glow" %>
-          </div>
-          <div class="w-full sm:w-auto flex flex-col sm:flex-row items-center space-x-2">
-            <%#= link_to "Edit", edit_recipe_path(recipe), class: "muted-link cursor-pointer" %>
-            <%= button_to "Destroy", recipe, method: :delete, class: "muted-link alert cursor-pointer", data: { turbo_confirm: "Are you sure?" } %>
-          </div>
-        </div>
+      <% @recipes.each.with_index do |recipe, index| %>
+        <%= render 'shared/choice_card',
+            index: index,
+            title: recipe.title,
+            description: recipe.description,
+            path: recipe_path(recipe) %>
       <% end %>
     <% else %>
-      <p class="text-center my-10">No recipes found.</p>
+      <div class="text-center py-10 opacity-70">
+        <p class="mb-4">Your recipe book is empty!</p>
+        <p class="text-sm">Use the MCP tools to add recipes to your collection.</p>
+      </div>
     <% end %>
+            <%= render 'shared/choice_card',
+            index: @recipes.length,
+            title: "← Back to menu",
+            description: "Go back to the main menu",
+            path: root_path %>
   </div>
-</div>
+

@@ -1,0 +1,23 @@
+<%= render "shared/dialogue_box", text: "Welcome back, Chef! What's your next culinary adventure?" %>
+
+<div class="flex flex-col gap-3 mb-8" data-controller="rpg-menu" data-rpg-menu-selected-value="0">
+<%= render 'shared/choice_card',
+    index: 0,
+    title: 'Cook something',
+    description: 'Find recipes based on your pantry',
+    path: recipes_path %>
+
+<%= render 'shared/choice_card', index: 1, title: 'Discover recipes', description: 'Browse and save new recipes', path: recipes_path %>
+
+<%= render 'shared/choice_card',
+    index: 2,
+    title: 'Plan meals',
+    description: 'Organize your weekly menu',
+    path: meal_plans_path %>
+
+<%= render 'shared/choice_card',
+    index: 3,
+    title: 'Manage pantry',
+    description: 'Track your ingredients',
+    path: pantry_items_path %>
+</div>

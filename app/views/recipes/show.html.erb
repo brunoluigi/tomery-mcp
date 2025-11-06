@@ -1,3 +1,77 @@
-<%= modal_container_helper(title: @recipe.title) do %>
-  <%= render @recipe %>
-<% end %>
+  <div class="space-y-6 mb-8">
+    <!-- Recipe Header -->
+    <div class="p-6 border border-[rgba(0,255,128,0.25)] rounded-xl bg-[rgba(0,32,16,0.3)]">
+      <h2 class="text-3xl glow mb-4"><%= @recipe.title %></h2>
+      
+      <% if @recipe.description.present? %>
+        <div class="mb-6 pb-6 border-b border-[rgba(0,255,128,0.15)]">
+          <p class="opacity-80 text-base leading-relaxed"><%= @recipe.description %></p>
+        </div>
+      <% end %>
+      
+      <!-- Ingredients Section -->
+      <% if @recipe.ingredients.present? && @recipe.ingredients.is_a?(Array) %>
+        <div class="mb-6">
+          <h3 class="text-xl mb-4 glow opacity-90">Ingredients</h3>
+          <ul class="space-y-2">
+            <% @recipe.ingredients.each do |ingredient| %>
+              <% if ingredient.is_a?(Hash) %>
+                <% name = ingredient['name'] || ingredient[:name] || ingredient['ingredient'] || ingredient[:ingredient] %>
+                <% quantity = ingredient['quantity'] || ingredient[:quantity] || ingredient['amount'] || ingredient[:amount] %>
+                <% if name && quantity %>
+                  <li class="flex items-start gap-3 opacity-80">
+                    <span class="text-[#9ef9ae] mt-1">•</span>
+                    <span class="flex-1">
+                      <span class="font-medium text-[#9ef9ae]"><%= quantity %></span>
+                      <span class="ml-2"><%= name %></span>
+                    </span>
+                  </li>
+                <% elsif name %>
+                  <li class="flex items-start gap-3 opacity-80">
+                    <span class="text-[#9ef9ae] mt-1">•</span>
+                    <span><%= name %></span>
+                  </li>
+                <% end %>
+              <% elsif ingredient.is_a?(String) %>
+                <li class="flex items-start gap-3 opacity-80">
+                  <span class="text-[#9ef9ae] mt-1">•</span>
+                  <span><%= ingredient %></span>
+                </li>
+              <% end %>
+            <% end %>
+          </ul>
+        </div>
+      <% end %>
+      
+      <!-- Instructions Section -->
+      <% if @recipe.instructions.present? && @recipe.instructions.is_a?(Array) %>
+        <div>
+          <h3 class="text-xl mb-4 glow opacity-90">Instructions</h3>
+          <ol class="space-y-4">
+            <% @recipe.instructions.each_with_index do |instruction, index| %>
+              <li class="flex gap-4 opacity-80">
+                <span class="flex-shrink-0 w-8 h-8 flex items-center justify-center rounded-full bg-[rgba(0,255,128,0.2)] border border-[rgba(0,255,128,0.3)] text-[#9ef9ae] font-semibold text-sm">
+                  <%= index + 1 %>
+                </span>
+                <span class="flex-1 pt-1 leading-relaxed"><%= instruction %></span>
+              </li>
+            <% end %>
+          </ol>
+        </div>
+      <% elsif @recipe.instructions.present? %>
+        <!-- Fallback for non-array instructions -->
+        <div>
+          <h3 class="text-xl mb-4 glow opacity-90">Instructions</h3>
+          <div class="opacity-70 whitespace-pre-wrap leading-relaxed"><%= @recipe.instructions %></div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+  
+  <!-- Navigation -->
+  <div class="flex gap-4 flex-wrap">
+    <%= link_to "← Back to recipes", recipes_path, 
+        class: "inline-block opacity-70 hover:opacity-100 transition-opacity no-underline text-[#9ef9ae]" %>
+    <%= link_to "← Back to menu", root_path, 
+        class: "inline-block opacity-70 hover:opacity-100 transition-opacity no-underline text-[#9ef9ae]" %>
+  </div>

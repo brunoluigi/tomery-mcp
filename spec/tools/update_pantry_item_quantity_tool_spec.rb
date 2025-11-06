@@ -10,7 +10,7 @@ RSpec.describe UpdatePantryItemQuantityTool do
   let!(:pantry_item) { FactoryBot.create(:pantry_item, user:) }
 
   it 'should update pantry item quantity' do
-    response = call_tool_with_schema_validation!(tool:, server_context:, token:, name: pantry_item.name, quantity: "2 kg")
+    response = call_tool_with_schema_validation!(tool:, server_context:, name: pantry_item.name, quantity: "2 kg")
 
     expect(response.content.first[:text]).to eq("OK")
 
@@ -19,13 +19,13 @@ RSpec.describe UpdatePantryItemQuantityTool do
 
   it 'should create a new pantry item quantity' do
     expect do
-      call_tool_with_schema_validation!(tool:, server_context:, token:, name: "New Pantry Item", quantity: "1 kg")
+      call_tool_with_schema_validation!(tool:, server_context:, name: "New Pantry Item", quantity: "1 kg")
     end.to change(user.pantry_items, :count).by(1)
   end
 
   it 'should not update pantry item quantity if name is missing' do
     expect do
-      call_tool_with_schema_validation!(tool:, server_context:, token:, quantity: "2")
+      call_tool_with_schema_validation!(tool:, server_context:, quantity: "2")
     end.to(
       raise_error
       .with_message(/did not contain.+name/i)
@@ -34,7 +34,7 @@ RSpec.describe UpdatePantryItemQuantityTool do
 
   it 'should not update pantry item quantity if quantity is missing' do
     expect do
-      call_tool_with_schema_validation!(tool:, server_context:, token:, name: pantry_item.name)
+      call_tool_with_schema_validation!(tool:, server_context:, name: pantry_item.name)
     end.to(
       raise_error
       .with_message(/did not contain.+quantity/i)
