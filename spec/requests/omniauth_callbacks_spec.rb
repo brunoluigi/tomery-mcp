@@ -46,6 +46,56 @@ RSpec.describe "OmniauthCallbacks", type: :request do
 
         expect(response).to redirect_to(session_path)
       end
+
+      it "creates a session with mcp_token for new user" do
+        expect {
+          get '/auth/google_oauth2/callback'
+        }.to change(Session, :count).by(1)
+
+        user = User.last
+        session = user.sessions.last
+        expect(session.mcp_token).to be_present
+        expect(session.mcp_token.length).to eq(36)
+      end
+
+      it "associates OAuth with existing email-only user" do
+        existing_user = User.create!(
+          email_address: 'test@example.com',
+          password: 'password123',
+          password_confirmation: 'password123'
+        )
+
+        expect {
+          get '/auth/google_oauth2/callback'
+        }.not_to change(User, :count)
+
+        existing_user.reload
+        expect(existing_user.provider).to eq('google_oauth2')
+        expect(existing_user.uid).to eq('123456789')
+        expect(existing_user.image_url).to eq('https://example.com/avatar.jpg')
+      end
+    end
+
+    context "with missing email in OAuth response" do
+      before do
+        OmniAuth.config.mock_auth[:google_oauth2] = OmniAuth::AuthHash.new({
+          provider: 'google_oauth2',
+          uid: '123456789',
+          info: {
+            name: 'Test User',
+            image: 'https://example.com/avatar.jpg'
+          }
+        })
+      end
+
+      it "fails to create user and redirects with error" do
+        expect {
+          get '/auth/google_oauth2/callback'
+        }.not_to change(User, :count)
+
+        expect(response).to redirect_to(new_session_path)
+        expect(flash[:alert]).to eq('Authentication failed. Please try again.')
+      end
     end
 
     context "with invalid OAuth response" do

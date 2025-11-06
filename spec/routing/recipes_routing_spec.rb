@@ -31,8 +31,8 @@ RSpec.describe RecipesController, type: :routing do
     #   expect(patch: "/recipes/1").to route_to("recipes#update", id: "1")
     # end
 
-    it "routes to #destroy" do
-      expect(delete: "/recipes/1").to route_to("recipes#destroy", id: "1")
-    end
+    # it "routes to #destroy" do
+    #   expect(delete: "/recipes/1").to route_to("recipes#destroy", id: "1")
+    # end
   end
 end

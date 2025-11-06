@@ -1,0 +1,31 @@
+<%= render 'shared/dialogue_box', 
+    text: "Let's plan your meals for the week!" %>
+  
+  <div class="space-y-4 mb-8">
+    <% if @meal_plans.any? %>
+      <% @meal_plans.each do |meal_plan| %>
+        <div class="p-4 border border-[rgba(0,255,128,0.25)] rounded-lg bg-[rgba(0,32,16,0.3)] hover:border-[rgba(0,255,128,0.4)] transition-colors">
+          <div class="flex justify-between items-center">
+            <div>
+              <span class="text-lg glow"><%= meal_plan.date.strftime("%A, %B %d") %></span>
+              <% if meal_plan.recipe %>
+                <span class="ml-3 opacity-70">→ <%= meal_plan.recipe.title %></span>
+              <% end %>
+            </div>
+            <%= button_to "Remove", meal_plan_path(meal_plan), 
+                method: :delete, 
+                class: "text-sm opacity-60 hover:opacity-100 transition-opacity",
+                data: { turbo_confirm: "Remove this meal plan?" } %>
+          </div>
+        </div>
+      <% end %>
+    <% else %>
+      <div class="text-center py-10 opacity-70">
+        <p class="mb-4">No meal plans yet!</p>
+        <p class="text-sm">Use the MCP tools to plan your meals.</p>
+      </div>
+    <% end %>
+  </div>
+  
+  <%= link_to "← Back to menu", root_path, 
+      class: "inline-block mt-5 opacity-70 hover:opacity-100 transition-opacity no-underline" %>

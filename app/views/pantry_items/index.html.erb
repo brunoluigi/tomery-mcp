@@ -1,0 +1,23 @@
+<%= render 'shared/dialogue_box', 
+    text: "Here's what you have in your pantry:" %>
+  
+  <div class="space-y-4 mb-8" data-controller="rpg-menu">
+    <% if @pantry_items.any? %>
+      <% @pantry_items.each.with_index do |item, index| %>
+        <%= render 'shared/choice_card_modal',
+            index: index,
+            title: item.name,
+            description: "Quantity: #{item.quantity}",
+            path: edit_pantry_item_path(item),
+            delete_path: pantry_item_path(item) %>
+      <% end %>
+    <% else %>
+      <div class="text-center py-10 opacity-70">
+        <p class="mb-4">Your pantry is empty!</p>
+        <p class="text-sm">Use the MCP tools to add items to your pantry.</p>
+      </div>
+    <% end %>
+  </div>
+  
+  <%= link_to "← Back to menu", root_path, 
+      class: "inline-block mt-5 opacity-70 hover:opacity-100 transition-opacity no-underline" %>

@@ -15,7 +15,7 @@ RSpec.describe ListRecipesTool do
   }
 
   it 'should list recipes for user' do
-    response = call_tool_with_schema_validation!(tool:, server_context:, token:)
+    response = call_tool_with_schema_validation!(tool:, server_context:)
 
     expect(JSON.parse(response.content.first[:text]).count).to eq(2)
   end

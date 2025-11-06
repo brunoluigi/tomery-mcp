@@ -78,14 +78,8 @@ gem "tailwindcss-rails", "~> 4.3"
 
 gem "newrelic_rpm", "~> 9.21"
 
-gem "mcp", "~> 0.3.0"
+gem "mcp", "~> 0.4.0"
 
-# OAuth authentication
+# OAuth authentication (for web sign-in)
 gem "omniauth-google-oauth2", "~> 1.1"
 gem "omniauth-rails_csrf_protection", "~> 1.0"
-
-# Google OAuth token validation for MCP
-gem "google-id-token", "~> 1.4"
-
-# HTTP client for OAuth token proxy
-gem "httparty", "~> 0.22"

@@ -22,12 +22,15 @@
     <%= javascript_importmap_tags %>
   </head>
 
-<body class="grid pb-10 pt-10 h-full">
-  <main class="card">
+<body class="flex flex-col items-center justify-center pb-10 pt-10 h-full">
+  <div class="bg-grid"></div>
+  <div class="bg-grid bg-grid-after"></div>
+  <main class="sm:rounded-xl sm:border border-green-600/50 sm:bg-gradient-to-b from-emerald-950/20 to-green-950/40 shadow-lg p-2 sm:px-10 sm:py-8 sm:max-w-5xl">
     <% if authenticated? %>
-      <div class="mb-5">
-        <%= link_to "current session", session_path, class: "muted-link" %> | 
-        <%= link_to "recipes", recipes_path, class: "muted-link" %> | 
+      <div class="mb-5 text-xs sm:text-base">
+        <%= link_to "menu", root_path, class: "muted-link" %> | 
+        <%= link_to "my stuff", my_stuff_recipes_path, class: " muted-link" %> | 
+        <%= link_to "session", session_path, class: "muted-link" %> | 
         <% if Current.session.user.admin? %>
           <%= link_to "users", users_path, class: "muted-link" %> | 
         <% end %>
@@ -48,7 +51,7 @@
 
   </main>
   
-  <div class="mt-5 pb-10 text-center glow opacity-75">Copyright © 2025 Tomery MCP. All rights reserved.</div>
+  <div class="mt-5 pb-10 text-center text-xs sm:text-base glow opacity-75">Copyright © 2025 Tomery MCP. All rights reserved.</div>
 
   <%= turbo_frame_tag "modal" %>
 </body>

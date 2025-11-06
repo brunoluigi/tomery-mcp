@@ -18,14 +18,14 @@ RSpec.describe ListMealPlansTool do
   }
 
   it 'should list meal plans for user' do
-    response = call_tool_with_schema_validation!(tool:, server_context:, token:, start_date: Date.today.to_s, end_date: Date.tomorrow.to_s)
+    response = call_tool_with_schema_validation!(tool:, server_context:, start_date: Date.today.to_s, end_date: Date.tomorrow.to_s)
 
     expect(JSON.parse(response.content.first[:text]).count).to eq(2)
   end
 
   it 'should not list meal plans for user if start_date is missing' do
     expect do
-      call_tool_with_schema_validation!(tool:, server_context:, token:, end_date: Date.tomorrow)
+      call_tool_with_schema_validation!(tool:, server_context:, end_date: Date.tomorrow)
     end.to(
       raise_error.with_message(/did not contain.+start_date/i)
     )
@@ -33,7 +33,7 @@ RSpec.describe ListMealPlansTool do
 
   it 'should not list meal plans for user if end_date is missing' do
     expect do
-      call_tool_with_schema_validation!(tool:, server_context:, token:, start_date: Date.today)
+      call_tool_with_schema_validation!(tool:, server_context:, start_date: Date.today)
     end.to(
       raise_error.with_message(/did not contain.+end_date/i)
     )
