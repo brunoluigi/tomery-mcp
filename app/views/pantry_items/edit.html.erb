@@ -1,0 +1,33 @@
+<%= modal_container_helper(title: "Edit pantry item") do %>
+    <div class="space-y-4 mt-4" data-turbo-frame="_top">
+        <%= form_with(model: @pantry_item, class: "space-y-4 mt-4", data: { turbo_frame: '_top'  }) do |form| %>
+            <% if @pantry_item.errors.any? %>
+                <div id="error_explanation" class="bg-red-50 text-red-500 px-3 py-2 font-medium rounded-md mt-3">
+                <h2><%= pluralize(@pantry_item.errors.count, "error") %> prohibited this pantry item from being saved:</h2>
+
+                <ul class="list-disc ml-6">
+                    <% @pantry_item.errors.each do |error| %>
+                    <li><%= error.full_message %></li>
+                    <% end %>
+                </ul>
+                </div>
+            <% end %>
+
+            <div class="space-x-2">
+                <%= form.label :name, class: "label" %>
+                <%= form.text_field :name, class: "input" %>
+            </div>
+
+            <div class="form-row">
+                <%= form.label :quantity, class: "label" %>
+                <%= form.text_field :quantity, class: "input" %>
+            </div>
+
+            <div class="inline">
+                <%= form.submit class: "btn" %>
+            </div>
+        <% end %>
+        
+        <%= button_to "Remove", pantry_item_path(@pantry_item), method: :delete, id: "teteia", class: "muted-link alert cursor-pointer", data: { turbo_confirm: "Remove this item?", turbo_method: :delete, turbo_frame: "_top" } %>
+    </div>
+<% end %>

@@ -1,9 +1,13 @@
 module ModalHelper
-  def modal_link_helper(title, path, **options)
+  def modal_link_helper(title, path, **options, &block)
     options[:data] ||= {}
     options[:data][:turbo_frame] = "modal"
 
-    link_to title, path, **options
+    if block_given?
+      link_to path, **options, &block
+    else
+      link_to title, path, **options
+    end
   end
 
   def modal_container_helper(title: "", &block)

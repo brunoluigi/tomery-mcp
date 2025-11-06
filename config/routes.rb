@@ -2,7 +2,16 @@ Rails.application.routes.draw do
   # Model Context Protocol - POST only per MCP spec
   post "/mcp", to: "mcp#handle"
 
-  resources :recipes, only: %i[index show destroy]
+  # RPG-style interfaces (main experience)
+  resources :recipes, only: %i[index show]
+  resources :meal_plans, only: %i[index show new create destroy]
+  resources :pantry_items, only: %i[index new create edit update destroy]
+
+  # Traditional "My Stuff" views
+  namespace :my_stuff do
+    resources :recipes, only: %i[index show destroy]
+  end
+
   resources :users do
       put :toggle_activate, on: :member
   end
