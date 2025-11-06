@@ -70,7 +70,7 @@ group :test do
   gem "selenium-webdriver"
 end
 
-gem "resend", "~> 0.24.0"
+gem "resend", "~> 1.0.0"
 
 gem "tailwindcss-ruby", "~> 4.1"
 
