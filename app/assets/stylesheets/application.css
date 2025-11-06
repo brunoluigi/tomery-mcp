@@ -29,8 +29,8 @@
  }
 
  /* Animated grid (nerdy vibe) */
- .grid::before, .grid::after {
-   content: ""; position: absolute; inset: -50vmax; pointer-events: none;
+ .bg-grid {
+   position: fixed; inset: -50vmax; pointer-events: none;
    background: 
      linear-gradient(#0f2 1px, transparent 1px) 0 0 / 48px 48px,
      linear-gradient(90deg, #0f2 1px, transparent 1px) 0 0 / 48px 48px;
@@ -38,7 +38,7 @@
    animation: drift 12s linear infinite;
    overflow: hidden;
  }
- .grid::after { animation-duration: 18s; opacity: .05; }
+ .bg-grid-after { animation-duration: 18s; opacity: .05; }
  @keyframes drift { to { transform: perspective(600px) rotateX(60deg) translateY(-30vh); } }
 
  .card {
