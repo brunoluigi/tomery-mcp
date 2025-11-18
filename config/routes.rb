@@ -3,7 +3,11 @@ Rails.application.routes.draw do
   post "/mcp", to: "mcp#handle"
 
   # RPG-style interfaces (main experience)
-  resources :recipes, only: %i[index show]
+  resources :recipes, only: %i[index show] do
+    collection do
+      get :search
+    end
+  end
   resources :meal_plans, only: %i[index show new create destroy]
   resources :pantry_items, only: %i[index new create edit update destroy]
 

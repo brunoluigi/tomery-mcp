@@ -2,7 +2,7 @@ import { Controller } from "@hotwired/stimulus"
 
 // RPG-style menu with keyboard navigation
 export default class extends Controller {
-  static targets = ["item"]
+  static targets = ["item", "searchForm"]
   static values = { selected: Number }
 
   connect() {
@@ -56,8 +56,22 @@ export default class extends Controller {
     this.selectedValue = newIndex
     
     const selectedItem = this.itemTargets[newIndex]
+
     if (selectedItem) {
-      selectedItem.focus();
+      if(selectedItem.select) {
+        selectedItem.select()
+      } else {
+        selectedItem.focus()
+      }
+    }
+  }
+
+  focusSelected() {
+    console.debug("RPG Menu Controller focusSelected")
+
+    const selectedItem = this.itemTargets[this.selectedValue]
+    if (selectedItem) {
+      selectedItem.focus()
     }
   }
 
@@ -65,7 +79,12 @@ export default class extends Controller {
     const selectedItem = this.itemTargets[this.selectedValue]
 
     if (selectedItem) {
-      selectedItem.click()
+      // If the selected item is a search input, submit its form
+      if (selectedItem.tagName === "INPUT" && selectedItem.type === "text" && selectedItem.form) {
+        selectedItem.form.requestSubmit()
+      } else {
+        selectedItem.click()
+      }
     }
   }
 }

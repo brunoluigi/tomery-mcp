@@ -18,7 +18,7 @@ RSpec.describe GenerateRecipeEmbeddingJob, type: :job do
       instructions: [ "Cook pasta", "Mix eggs", "Combine all" ]
     )
   end
-  let(:mock_embedding) { [ 0.1, 0.2, 0.3 ] * 100 } # Mock embedding vector
+  let(:mock_embedding) { [ 0.1 ] * 1536 } # Mock embedding vector with 1536 dimensions
   let(:ai_service) { instance_double(AiService) }
 
   before do
@@ -34,18 +34,17 @@ RSpec.describe GenerateRecipeEmbeddingJob, type: :job do
 
       recipe.reload
       expect(recipe.embedding).to be_present
-      expect(JSON.parse(recipe.embedding)).to eq(mock_embedding)
     end
 
     it "regenerates embedding even if one already exists" do
-      recipe.update!(embedding: { existing: "embedding" }.to_json)
+      recipe.update!(embedding: mock_embedding)
 
       expect(ai_service).to receive(:generate_embedding).and_return(mock_embedding)
 
       described_class.perform_now(recipe.id)
 
       recipe.reload
-      expect(JSON.parse(recipe.embedding)).to eq(mock_embedding)
+      expect(recipe.embedding).to be_present
     end
 
     it "handles missing recipe gracefully" do

@@ -1,22 +1,42 @@
 <%= render 'shared/dialogue_box', text: "Let's find something delicious to cook! Here are your recipes:" %>
   
-  <div class="space-y-4 mb-8" data-controller="rpg-menu">
+  <div class="space-y-4 mb-8" data-controller="rpg-menu" data-rpg-menu-selected-value="0">
+    <div class="mb-6">
+      <%= form_with url: search_recipes_path, method: :get, local: true, class: "mb-4", data: { rpg_menu_target: "searchForm" } do |f| %>
+        <div class="flex gap-2">
+          <%= f.text_field :q, 
+              value: @query,
+              placeholder: "Search recipes...",
+              tabindex: "0",
+              data: { 
+                rpg_menu_target: "item",
+                rpg_menu_index_param: 0
+              },
+              class: "flex-1 px-4 py-2 bg-green-900/20 border border-green-600/50 rounded-lg text-white placeholder-green-400/50 focus:outline-none focus:border-green-500 focus:shadow-[0_0_10px] focus:shadow-green-800/50 transition-all outline-0" %>
+          <%= f.submit "Search", class: "px-6 py-2 bg-green-600/50 border border-green-600/50 rounded-lg text-white hover:bg-green-600/70 hover:border-green-600/90 transition-all cursor-pointer" %>
+        </div>
+      <% end %>
+    </div>
     <% if @recipes.any? %>
       <% @recipes.each.with_index do |recipe, index| %>
         <%= render 'shared/choice_card',
-            index: index,
+            index: index + 1,
             title: recipe.title,
             description: recipe.description,
             path: recipe_path(recipe) %>
       <% end %>
     <% else %>
       <div class="text-center py-10 opacity-70">
-        <p class="mb-4">Your recipe book is empty!</p>
-        <p class="text-sm">Use the MCP tools to add recipes to your collection.</p>
+        <% if @query.present? %>
+          <p class="mb-4">No recipes found for "<%= @query %>"</p>
+        <% else %>
+          <p class="mb-4">Your recipe book is empty!</p>
+          <p class="text-sm">Use the MCP tools to add recipes to your collection.</p>
+        <% end %>
       </div>
     <% end %>
             <%= render 'shared/choice_card',
-            index: @recipes.length,
+            index: @recipes.length + 1,
             title: "← Back to menu",
             description: "Go back to the main menu",
             path: root_path %>

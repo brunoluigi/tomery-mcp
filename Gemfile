@@ -82,6 +82,7 @@ gem "mcp", "~> 0.4.0"
 
 # AI integration for embeddings and LLM features
 gem "ruby_llm", "~> 1.6"
+gem "neighbor", "~> 0.6"
 
 # OAuth authentication (for web sign-in)
 gem "omniauth-google-oauth2", "~> 1.1"

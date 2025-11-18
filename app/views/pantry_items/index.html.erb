@@ -1,7 +1,7 @@
 <%= render 'shared/dialogue_box', 
     text: "Here's what you have in your pantry:" %>
   
-  <div class="space-y-4 mb-8" data-controller="rpg-menu">
+  <div class="space-y-4 mb-8" data-controller="rpg-menu" data-action="turbo-modal:hideModal@window->rpg-menu#focusSelected">
     <% if @pantry_items.any? %>
       <% @pantry_items.each.with_index do |item, index| %>
         <%= render 'shared/choice_card_modal',
