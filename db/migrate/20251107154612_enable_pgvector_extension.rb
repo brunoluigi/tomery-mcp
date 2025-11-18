@@ -1,7 +1,5 @@
 class EnablePgvectorExtension < ActiveRecord::Migration[8.0]
   def up
-    enable_extension "vector"
-
     # Change embedding column from text to vector type
     # First, remove any existing JSON-encoded embeddings (they'll be regenerated)
     execute "UPDATE recipes SET embedding = NULL WHERE embedding IS NOT NULL"
