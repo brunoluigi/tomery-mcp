@@ -81,7 +81,7 @@ gem "newrelic_rpm", "~> 9.21"
 gem "mcp", "~> 0.4.0"
 
 # AI integration for embeddings and LLM features
-gem "ruby_llm", "~> 1.6"
+gem "ruby_llm", "~> 1.9"
 gem "neighbor", "~> 0.6"
 
 # OAuth authentication (for web sign-in)
