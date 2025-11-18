@@ -7,9 +7,10 @@ class GenerateRecipeEmbeddingJob < ApplicationJob
     recipe = Recipe.find(recipe_id)
 
     embedding_text = build_embedding_text(recipe)
-    embedding = AiService.new.generate_embedding(embedding_text)
+    embedding_array = AiService.new.generate_embedding(embedding_text)
 
-    recipe.update!(embedding: embedding.to_json)
+    # Update the embedding column directly - neighbor gem handles the conversion
+    recipe.update!(embedding: embedding_array)
   rescue ActiveRecord::RecordNotFound
     Rails.logger.warn("Recipe #{recipe_id} not found, skipping embedding generation")
   rescue StandardError => e

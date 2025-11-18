@@ -3,7 +3,21 @@ class Recipe < ApplicationRecord
 
   has_many :meal_plans, dependent: :destroy
 
+  has_neighbors :embedding
+
   after_commit :generate_embedding_async, if: :should_generate_embedding?
+
+  def self.search_by_embedding(query_text, limit: 10, max_distance: 0.7)
+    return none if query_text.blank?
+
+    query_embedding = AiService.new.generate_embedding(query_text)
+
+    # Find nearest neighbors and filter by distance threshold
+    # Cosine distance: lower = more similar, max_distance threshold filters out dissimilar results
+    nearest_neighbors(:embedding, query_embedding, distance: "cosine")
+      .where("embedding <=> ? < ?", query_embedding.to_json, max_distance)
+      .limit(limit)
+  end
 
   private
 

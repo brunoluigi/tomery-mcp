@@ -23,6 +23,8 @@ export default class extends Controller {
   }
 
   hideModal() {
+    console.debug("Modal Controller hideModal")
+    this.dispatch("hideModal")
     this.element.remove()
   }
 }
