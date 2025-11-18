@@ -6,7 +6,7 @@ RSpec.describe AiService do
   describe "#generate_embedding" do
     let(:service) { described_class.new }
     let(:text) { "Test recipe description" }
-    let(:mock_response) { instance_double("RubyLLM::EmbeddingResponse", vectors: [ 0.1, 0.2, 0.3 ] * 100) }
+    let(:mock_response) { instance_double("RubyLLM::EmbeddingResponse", vectors: [ 0.1 ] * 1536) }
 
     before do
       allow(RubyLLM).to receive(:embed).and_return(mock_response)

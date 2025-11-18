@@ -28,7 +28,7 @@ RSpec.describe Recipe, type: :model do
 
     it 'enqueues embedding job when title changes' do
       recipe.save!
-      recipe.update!(embedding: "[0.1, 0.2, 0.3]")
+      recipe.update!(embedding: [ 0.1 ] * 1536)
 
       expect do
         recipe.update!(title: "New Title")
@@ -37,7 +37,7 @@ RSpec.describe Recipe, type: :model do
 
     it 'enqueues embedding job when description changes' do
       recipe.save!
-      recipe.update!(embedding: "[0.1, 0.2, 0.3]")
+      recipe.update!(embedding: [ 0.1 ] * 1536)
 
       expect do
         recipe.update!(description: "New Description")
@@ -46,7 +46,7 @@ RSpec.describe Recipe, type: :model do
 
     it 'enqueues embedding job when ingredients change' do
       recipe.save!
-      recipe.update!(embedding: "[0.1, 0.2, 0.3]")
+      recipe.update!(embedding: [ 0.1 ] * 1536)
 
       expect do
         recipe.update!(ingredients: [ { "name" => "New Ingredient", "quantity" => "2 cups" } ])
@@ -55,7 +55,7 @@ RSpec.describe Recipe, type: :model do
 
     it 'regenerates embedding when relevant fields change even if embedding exists' do
       recipe.save!
-      recipe.update!(embedding: "[0.1, 0.2, 0.3]")
+      recipe.update!(embedding: [ 0.1 ] * 1536)
 
       expect do
         recipe.update!(title: "New Title")
@@ -64,7 +64,7 @@ RSpec.describe Recipe, type: :model do
 
     it 'does not enqueue job if embedding exists and fields unchanged' do
       recipe.save!
-      recipe.update!(embedding: "[0.1, 0.2, 0.3]")
+      recipe.update!(embedding: [ 0.1 ] * 1536)
 
       expect do
         recipe.update!(instructions: [ "New instruction" ])

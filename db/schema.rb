@@ -36,9 +36,17 @@ ActiveRecord::Schema[8.0].define(version: 2025_11_11_123102) do
     t.index ["user_id"], name: "index_pantry_items_on_user_id"
   end
 
-# Could not dump table "recipes" because of following StandardError
-#   Unknown type 'vector(1536)' for column 'embedding'
-
+  create_table "recipes", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "user_id", null: false
+    t.string "title"
+    t.string "description"
+    t.jsonb "ingredients"
+    t.jsonb "instructions"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.vector "embedding", limit: 1536
+    t.index ["user_id"], name: "index_recipes_on_user_id"
+  end
 
   create_table "sessions", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "user_id", null: false

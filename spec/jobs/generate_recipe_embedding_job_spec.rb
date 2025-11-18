@@ -18,7 +18,7 @@ RSpec.describe GenerateRecipeEmbeddingJob, type: :job do
       instructions: [ "Cook pasta", "Mix eggs", "Combine all" ]
     )
   end
-  let(:mock_embedding) { [ 0.1, 0.2, 0.3 ] * 100 } # Mock embedding vector
+  let(:mock_embedding) { [ 0.1 ] * 1536 } # Mock embedding vector with 1536 dimensions
   let(:ai_service) { instance_double(AiService) }
 
   before do
