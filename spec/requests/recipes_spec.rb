@@ -127,4 +127,72 @@ RSpec.describe "/recipes", type: :request do
       expect(response).to redirect_to(recipes_url)
     end
   end
+
+  describe "GET /recipes/search" do
+    include SignInHelper
+
+    let(:user) { FactoryBot.create(:user, active: true) }
+
+    before do
+      sign_in_as(user)
+    end
+
+    context "when AI service raises ApiKeyError" do
+      before do
+        allow_any_instance_of(AiService).to receive(:generate_embedding)
+          .and_raise(AiService::ApiKeyError.new("API key not configured"))
+      end
+
+      it "renders index with error message" do
+        get search_recipes_url, params: { q: "chicken" }
+        expect(response).to have_http_status(:success)
+        expect(flash.now[:alert]).to include("AI search is not configured")
+      end
+    end
+
+    context "when AI service raises RateLimitError" do
+      before do
+        allow_any_instance_of(AiService).to receive(:generate_embedding)
+          .and_raise(AiService::RateLimitError.new("Rate limit exceeded"))
+      end
+
+      it "renders index with error message" do
+        get search_recipes_url, params: { q: "chicken" }
+        expect(response).to have_http_status(:success)
+        expect(flash.now[:alert]).to include("rate limits")
+      end
+    end
+
+    context "when AI service raises NetworkError" do
+      before do
+        allow_any_instance_of(AiService).to receive(:generate_embedding)
+          .and_raise(AiService::NetworkError.new("Connection failed"))
+      end
+
+      it "renders index with error message" do
+        get search_recipes_url, params: { q: "chicken" }
+        expect(response).to have_http_status(:success)
+        expect(flash.now[:alert]).to include("Unable to connect")
+      end
+    end
+
+    context "when AI service raises generic Error" do
+      before do
+        allow_any_instance_of(AiService).to receive(:generate_embedding)
+          .and_raise(AiService::Error.new("Service unavailable"))
+        allow(Rails.logger).to receive(:error)
+      end
+
+      it "renders index with generic error message" do
+        get search_recipes_url, params: { q: "chicken" }
+        expect(response).to have_http_status(:success)
+        expect(flash.now[:alert]).to include("temporarily unavailable")
+      end
+
+      it "logs the error" do
+        get search_recipes_url, params: { q: "chicken" }
+        expect(Rails.logger).to have_received(:error).with(/AI search error/)
+      end
+    end
+  end
 end

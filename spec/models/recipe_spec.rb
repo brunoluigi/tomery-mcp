@@ -85,4 +85,32 @@ RSpec.describe Recipe, type: :model do
       end.not_to have_enqueued_job(GenerateRecipeEmbeddingJob)
     end
   end
+
+  describe '.search_by_embedding' do
+    let(:user) { FactoryBot.create(:user) }
+    let(:recipe1) { FactoryBot.create(:recipe, user:, title: "Chicken Curry", description: "Spicy chicken dish") }
+    let(:recipe2) { FactoryBot.create(:recipe, user:, title: "Beef Stew", description: "Hearty beef dish") }
+
+    before do
+      recipe1.update!(embedding: [ 0.1 ] * 1536)
+      recipe2.update!(embedding: [ 0.2 ] * 1536)
+    end
+
+    it 'returns empty result when query is blank' do
+      expect(described_class.search_by_embedding("")).to be_empty
+    end
+
+    context 'when AI service fails' do
+      before do
+        allow_any_instance_of(AiService).to receive(:generate_embedding)
+          .and_raise(AiService::Error.new("AI service unavailable"))
+      end
+
+      it 'raises the error to allow controller to handle it' do
+        expect do
+          described_class.search_by_embedding("chicken")
+        end.to raise_error(AiService::Error, "AI service unavailable")
+      end
+    end
+  end
 end
