@@ -12,6 +12,7 @@ RSpec.describe AiService do
       allow(RubyLLM).to receive(:embed).and_return(mock_response)
       allow(ENV).to receive(:[]).and_call_original
       allow(ENV).to receive(:[]).with("OPENAI_API_KEY").and_return("test-key")
+      allow(ENV).to receive(:[]).with("ANTHROPIC_API_KEY").and_return(nil)
     end
 
     it "generates embedding for text" do
@@ -38,12 +39,41 @@ RSpec.describe AiService do
     context "when API key is missing" do
       before do
         allow(ENV).to receive(:[]).with("OPENAI_API_KEY").and_return(nil)
+        allow(ENV).to receive(:[]).with("ANTHROPIC_API_KEY").and_return(nil)
       end
 
       it "raises ApiKeyError" do
         expect do
           service.generate_embedding(text)
-        end.to raise_error(AiService::ApiKeyError, /API key is not configured/)
+        end.to raise_error(AiService::ApiKeyError, /AI API key is not configured/)
+      end
+    end
+
+    context "when Anthropic API key is present" do
+      before do
+        allow(ENV).to receive(:[]).with("OPENAI_API_KEY").and_return(nil)
+        allow(ENV).to receive(:[]).with("ANTHROPIC_API_KEY").and_return("anthropic-test-key")
+      end
+
+      it "generates embedding successfully" do
+        result = service.generate_embedding(text)
+
+        expect(RubyLLM).to have_received(:embed).with(text, model: "text-embedding-3-small")
+        expect(result).to eq(mock_response.vectors)
+      end
+    end
+
+    context "when both API keys are present" do
+      before do
+        allow(ENV).to receive(:[]).with("OPENAI_API_KEY").and_return("openai-test-key")
+        allow(ENV).to receive(:[]).with("ANTHROPIC_API_KEY").and_return("anthropic-test-key")
+      end
+
+      it "generates embedding successfully" do
+        result = service.generate_embedding(text)
+
+        expect(RubyLLM).to have_received(:embed).with(text, model: "text-embedding-3-small")
+        expect(result).to eq(mock_response.vectors)
       end
     end
 

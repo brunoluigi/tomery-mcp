@@ -35,9 +35,9 @@ class AiService
   end
 
   def validate_api_key
-    return if ENV["OPENAI_API_KEY"].present?
+    return if ENV["OPENAI_API_KEY"].present? || ENV["ANTHROPIC_API_KEY"].present?
 
-    raise ApiKeyError, "OpenAI API key is not configured"
+    raise ApiKeyError, "AI API key is not configured. Please set OPENAI_API_KEY or ANTHROPIC_API_KEY"
   end
 
   def handle_ruby_llm_error(error)
