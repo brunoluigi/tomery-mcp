@@ -16,6 +16,7 @@ Always use Tailwind for CSS
 
 ## Testing
 Always create spec files for Models and complex business logic.
+**ALWAYS run `bin/rspec` after completing any task to ensure all specs pass before finishing.**
 
 ## Output style
 Keep it short and direct.
