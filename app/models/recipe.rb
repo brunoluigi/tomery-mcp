@@ -19,15 +19,55 @@ class Recipe < ApplicationRecord
       .limit(limit)
   end
 
-  def self.suggest_from_pantry(user, limit: 10, max_distance: 0.7)
+  def self.suggest_from_pantry(user, limit: 10, max_distance: 0.7, require_all_ingredients: true)
     pantry_items = user.pantry_items
     return none if pantry_items.empty?
 
-    # Build query text from pantry item names
+    # Build query text from pantry item names for semantic search
     ingredient_list = pantry_items.pluck(:name).join(", ")
     query_text = "recipes with #{ingredient_list}"
 
-    search_by_embedding(query_text, limit:, max_distance:)
+    # Get candidate recipes using embedding search (get more than limit to filter)
+    candidate_recipes = search_by_embedding(query_text, limit: limit * 3, max_distance:).to_a
+
+    # Filter to only recipes where user has required ingredients
+    pantry_names = normalize_ingredient_names(pantry_items.pluck(:name))
+    filtered_ids = candidate_recipes.select do |recipe|
+      recipe_ingredients = extract_ingredient_names(recipe)
+      next false if recipe_ingredients.empty?
+
+      if require_all_ingredients
+        # User must have ALL ingredients
+        recipe_ingredients.all? { |ingredient| pantry_names.include?(ingredient) }
+      else
+        # User must have at least 80% of ingredients
+        matches = recipe_ingredients.count { |ingredient| pantry_names.include?(ingredient) }
+        (matches.to_f / recipe_ingredients.length) >= 0.8
+      end
+    end.first(limit).map(&:id)
+
+    # Return as ActiveRecord relation
+    where(id: filtered_ids).limit(limit)
+  end
+
+  def self.extract_ingredient_names(recipe)
+    return [] unless recipe.ingredients.is_a?(Array)
+
+    recipe.ingredients.map do |ingredient|
+      if ingredient.is_a?(Hash)
+        ingredient["name"] || ingredient[:name] || ingredient["ingredient"] || ingredient[:ingredient]
+      else
+        ingredient.to_s
+      end
+    end.compact.map { |name| normalize_ingredient_name(name) }
+  end
+
+  def self.normalize_ingredient_names(names)
+    names.map { |name| normalize_ingredient_name(name) }.to_set
+  end
+
+  def self.normalize_ingredient_name(name)
+    name.to_s.downcase.strip
   end
 
   private
