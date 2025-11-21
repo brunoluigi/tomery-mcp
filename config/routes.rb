@@ -6,6 +6,7 @@ Rails.application.routes.draw do
   resources :recipes, only: %i[index show] do
     collection do
       get :search
+      get :suggest_from_pantry
     end
   end
   resources :meal_plans, only: %i[index show new create destroy]

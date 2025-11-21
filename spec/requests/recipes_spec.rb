@@ -195,4 +195,108 @@ RSpec.describe "/recipes", type: :request do
       end
     end
   end
+
+  describe "GET /recipes/suggest_from_pantry" do
+    include SignInHelper
+
+    let(:user) { FactoryBot.create(:user, active: true) }
+
+    before do
+      sign_in_as(user)
+    end
+
+    context "when user has no pantry items" do
+      it "returns empty results" do
+        get suggest_from_pantry_recipes_url
+        expect(response).to have_http_status(:success)
+        expect(response.body).to include("No recipes found")
+      end
+    end
+
+    context "when user has pantry items" do
+      let!(:pantry_item1) { FactoryBot.create(:pantry_item, user:, name: "chicken") }
+      let!(:pantry_item2) { FactoryBot.create(:pantry_item, user:, name: "rice") }
+      let!(:recipe) { FactoryBot.create(:recipe, user:, title: "Chicken Curry") }
+
+      before do
+        recipe.update!(embedding: [ 0.1 ] * 1536)
+        allow_any_instance_of(AiService).to receive(:generate_embedding) do |_instance, query_text|
+          [ 0.1 ] * 1536
+        end
+      end
+
+      it "renders index with suggestions" do
+        get suggest_from_pantry_recipes_url
+        expect(response).to have_http_status(:success)
+        expect(response.body).to include("recipes with chicken")
+        expect(response.body).to include("rice")
+      end
+    end
+
+    context "when AI service raises ApiKeyError" do
+      let!(:pantry_item) { FactoryBot.create(:pantry_item, user:, name: "chicken") }
+
+      before do
+        allow_any_instance_of(AiService).to receive(:generate_embedding)
+          .and_raise(AiService::ApiKeyError.new("API key not configured"))
+      end
+
+      it "renders index with error message" do
+        get suggest_from_pantry_recipes_url
+        expect(response).to have_http_status(:success)
+        expect(flash.now[:alert]).to include("AI search is not configured")
+      end
+    end
+
+    context "when AI service raises RateLimitError" do
+      let!(:pantry_item) { FactoryBot.create(:pantry_item, user:, name: "chicken") }
+
+      before do
+        allow_any_instance_of(AiService).to receive(:generate_embedding)
+          .and_raise(AiService::RateLimitError.new("Rate limit exceeded"))
+      end
+
+      it "renders index with error message" do
+        get suggest_from_pantry_recipes_url
+        expect(response).to have_http_status(:success)
+        expect(flash.now[:alert]).to include("rate limits")
+      end
+    end
+
+    context "when AI service raises NetworkError" do
+      let!(:pantry_item) { FactoryBot.create(:pantry_item, user:, name: "chicken") }
+
+      before do
+        allow_any_instance_of(AiService).to receive(:generate_embedding)
+          .and_raise(AiService::NetworkError.new("Connection failed"))
+      end
+
+      it "renders index with error message" do
+        get suggest_from_pantry_recipes_url
+        expect(response).to have_http_status(:success)
+        expect(flash.now[:alert]).to include("Unable to connect")
+      end
+    end
+
+    context "when AI service raises generic Error" do
+      let!(:pantry_item) { FactoryBot.create(:pantry_item, user:, name: "chicken") }
+
+      before do
+        allow_any_instance_of(AiService).to receive(:generate_embedding)
+          .and_raise(AiService::Error.new("Service unavailable"))
+        allow(Rails.logger).to receive(:error)
+      end
+
+      it "renders index with generic error message" do
+        get suggest_from_pantry_recipes_url
+        expect(response).to have_http_status(:success)
+        expect(flash.now[:alert]).to include("temporarily unavailable")
+      end
+
+      it "logs the error" do
+        get suggest_from_pantry_recipes_url
+        expect(Rails.logger).to have_received(:error).with(/AI search error/)
+      end
+    end
+  end
 end

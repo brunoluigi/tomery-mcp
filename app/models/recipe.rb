@@ -19,6 +19,17 @@ class Recipe < ApplicationRecord
       .limit(limit)
   end
 
+  def self.suggest_from_pantry(user, limit: 10, max_distance: 0.7)
+    pantry_items = user.pantry_items
+    return none if pantry_items.empty?
+
+    # Build query text from pantry item names
+    ingredient_list = pantry_items.pluck(:name).join(", ")
+    query_text = "recipes with #{ingredient_list}"
+
+    search_by_embedding(query_text, limit:, max_distance:)
+  end
+
   private
 
   def should_generate_embedding?
