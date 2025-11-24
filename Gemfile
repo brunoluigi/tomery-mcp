@@ -86,4 +86,4 @@ gem "neighbor", "~> 0.6"
 
 # OAuth authentication (for web sign-in)
 gem "omniauth-google-oauth2", "~> 1.1"
-gem "omniauth-rails_csrf_protection", "~> 1.0"
+gem "omniauth-rails_csrf_protection", "~> 2.0"
