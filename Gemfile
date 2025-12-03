@@ -76,7 +76,7 @@ gem "tailwindcss-ruby", "~> 4.1"
 
 gem "tailwindcss-rails", "~> 4.3"
 
-gem "newrelic_rpm", "~> 9.21"
+gem "newrelic_rpm", "~> 9.24"
 
 gem "mcp", "~> 0.4.0"
 
